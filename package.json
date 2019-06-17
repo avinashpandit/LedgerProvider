@@ -1,0 +1,67 @@
+{
+  "name": "LedgerProvider",
+  "version": "1.0.0",
+  "description": "Combined one package for interacting with Ledger device and Ledger API - Using LedgerJS , Ledger commons",
+  "homepage": "http://coinagg.com",
+  "scripts": {
+    "prepack": "npm run prepack:babel && npm run prepack:flow",
+    "prepack:babel": "babel provider/ -d lib",
+    "prepack:flow": "flow-copy-source src lib"
+  },
+  "keywords": [
+    "Ledger",
+    "LedgerJS",
+    "LedgerCommon"
+  ],
+  "directories": {
+    "lib": "./lib"
+  },
+  "main": "./lib",
+  "dependencies": {},
+  "author": {
+    "name": "Avinash Pandit",
+    "email": "avinashpandit@gmail.com",
+    "url": "https://github.com/avinashpandit"
+  },
+  "maintainers": [
+    {
+      "name": "Avinash Pandit",
+      "email": "avinashpandit@gmail.com",
+      "url": "https://github.com/avinashpandit"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/avinashpandit/LedgerProvider.git"
+  },
+  "bugs": {
+    "url": "https://github.com/avinashpandit/LedgerProvider.git/issues"
+  },
+  "engines": {
+    "node": ">= 10.x.x",
+    "npm": ">= 5.3.0"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "7.1.2",
+    "@babel/core": "7.1.2",
+    "@babel/node": "^7.2.2",
+    "@babel/plugin-proposal-class-properties": "7.1.0",
+    "@babel/plugin-syntax-dynamic-import": "7.0.0",
+    "@babel/plugin-transform-modules-commonjs": "7.1.0",
+    "@babel/plugin-transform-react-constant-elements": "7.0.0",
+    "@babel/plugin-transform-react-inline-elements": "7.0.0",
+    "@babel/polyfill": "7.0.0",
+    "@babel/preset-env": "7.1.0",
+    "@babel/preset-flow": "^7.0.0",
+    "@babel/preset-react": "7.0.0",
+    "@babel/register": "7.0.0",
+    "@ledgerhq/hw-app-btc": "4.33.5",
+    "@ledgerhq/hw-app-eth": "4.32.0",
+    "@ledgerhq/hw-transport": "4.32.0",
+    "@ledgerhq/hw-transport-node-hid": "4.33.3",
+    "@ledgerhq/live-common": "4.8.1",
+    "babel-eslint": "^7.1.1",
+    "flow-copy-source": "^2.0.6"
+  }
+}

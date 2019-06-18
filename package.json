@@ -1,6 +1,6 @@
 {
   "name": "hw-ledger-provider",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Combined one package for interacting with Ledger device and Ledger API - Using LedgerJS , Ledger commons",
   "homepage": "http://coinagg.com",
   "scripts": {

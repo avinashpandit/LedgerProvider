@@ -97,15 +97,17 @@ class LedgerProvider extends Provider{
   }
 
   next(device){
-    log.info(`OnNext device : ${JSON.stringify(device.descriptor)}` );
-    if(!this.transport)
-    {
+    log.info(`OnNext device : DEscriptor : ${JSON.stringify(device.descriptor)} Device :  ${JSON.stringify(device)}` );
       let self = this;
-      TransportNodeHid.create(undefined, true, 5000).then(transport => {
-        self.transport = transport;
-        self.transport.setDebugMode(true);
-      });
-    }
+      try {
+        TransportNodeHid.create(undefined, true, 5000).then(transport => {
+          self.transport = transport;
+          self.transport.setDebugMode(true);
+        });
+      }
+      catch (e) {
+        self.transport = undefined;
+      }
   }
 
   async getAddressForCurrency(derivationPath : string , ccy : string) {

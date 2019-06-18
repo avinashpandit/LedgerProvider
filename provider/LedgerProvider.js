@@ -97,15 +97,20 @@ class LedgerProvider extends Provider{
   }
 
   next(device){
-    log.info(`OnNext device : DEscriptor : ${JSON.stringify(device.descriptor)} Device :  ${JSON.stringify(device)}` );
+    log.info(`OnNext device : Descriptor : ${JSON.stringify(device.descriptor)} Device :  ${JSON.stringify(device)}` );
       let self = this;
-      try {
-        TransportNodeHid.create(undefined, true, 5000).then(transport => {
-          self.transport = transport;
-          self.transport.setDebugMode(true);
-        });
+      if(device && device.type && device.type === 'add') {
+        try {
+          TransportNodeHid.create(undefined, true, 5000).then(transport => {
+            self.transport = transport;
+            self.transport.setDebugMode(true);
+          });
+        } catch (e) {
+          self.transport = undefined;
+        }
       }
-      catch (e) {
+      else if(device && device.type && device.type === 'remove')
+      {
         self.transport = undefined;
       }
   }

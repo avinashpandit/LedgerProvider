@@ -1,8 +1,8 @@
 // @flow
-import logger from 'logger'
+import logger from '../logger'
 import { Observable } from 'rxjs'
 import uuidv4 from 'uuid/v4'
-import { deserializeError } from '@ledgerhq/live-common/lib/errors/helpers'
+import { deserializeError } from '@ledgerhq/errors'
 
 export function createCommand<In, A>(id: string, impl: In => Observable<A>): Command<In, A> {
   return new Command(id, impl)

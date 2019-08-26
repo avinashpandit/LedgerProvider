@@ -19,6 +19,9 @@ import {apiForBitcoin} from './api/Bitcoin';
 import ethereumBridge from './bridge/EthereumBridge';
 import {apiForRipple} from './api/Ripple';
 import rippleBridge from './bridge/RippleBridge';
+
+import currencyBridge from "@ledgerhq/live-common/lib/bridge/LibcoreCurrencyBridge";
+
 const pino = require('pino');
 const log = pino({
   prettyPrint: true
@@ -32,6 +35,7 @@ class LedgerProvider extends Provider{
     //TransportNodeHid.setListenDevicesDebug(true);
     TransportNodeHid.listen(this);
     this.transport;
+    this.device;
   }
 
   getDevice() {
@@ -52,6 +56,10 @@ class LedgerProvider extends Provider{
         },
       });
     });
+  }
+
+  getLedgerDevice(){
+    return this.device;
   }
 
   async getTransport()
@@ -81,6 +89,7 @@ class LedgerProvider extends Provider{
 
   onAdd(device){
     log.info(`Added device : ${JSON.stringify(device.descriptor)}` );
+    this.device = device.device;
     if(!this.transport)
     {
       let self = this;
@@ -94,6 +103,7 @@ class LedgerProvider extends Provider{
   onRemove(device){
     log.info(`Removed device : ${JSON.stringify(device.descriptor)}` );
     this.transport = undefined;
+    this.device = undefined;
   }
 
   next(device){
@@ -103,15 +113,18 @@ class LedgerProvider extends Provider{
         try {
           TransportNodeHid.create(undefined, true, 5000).then(transport => {
             self.transport = transport;
+            self.device = device.device;
             self.transport.setDebugMode(true);
           });
         } catch (e) {
           self.transport = undefined;
+          self.device = undefined;
         }
       }
       else if(device && device.type && device.type === 'remove')
       {
         self.transport = undefined;
+        self.device = undefined;
       }
   }
 
@@ -185,6 +198,9 @@ class LedgerProvider extends Provider{
       else if(currency.family === 'ripple')
       {
         return rippleBridge;
+      }
+      else if(currency.family === 'bitcoin'){
+        return currencyBridge;
       }
     }
   }

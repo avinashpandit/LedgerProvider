@@ -20,6 +20,7 @@ import ethereumBridge from './bridge/EthereumBridge';
 import {apiForRipple} from './api/Ripple';
 import rippleBridge from './bridge/RippleBridge';
 import currencyBridge from './bridge/CurrencyBridge'
+import {closeAllDevices} from "./tool/live-common-setup";
 
 const pino = require('pino');
 const log = pino({
@@ -147,6 +148,11 @@ class LedgerProvider extends Provider{
           });
       console.log('Transport Closed !!!');
     }
+  }
+
+  closeAllLibcoreTransports()
+  {
+    closeAllDevices();
   }
 
   async getAddressForCurrency(derivationPath : string , ccy : string) {

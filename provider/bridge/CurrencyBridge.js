@@ -2,6 +2,8 @@
 import Bridge from "../Bridge";
 import {findCryptoCurrencyByTicker} from "@ledgerhq/live-common/lib/data/cryptocurrencies";
 import signTransactionForCurrency from "../helpers/signTransactionForCurrency";
+import {from} from "rxjs";
+import allCommands from "../tool/commands";
 
 class CurrencyBridge extends Bridge {
 
@@ -32,7 +34,9 @@ class CurrencyBridge extends Bridge {
         return result;
     }
 
-
+    signAndBroadcastTransaction(options) {
+        return from(allCommands.send.job(options));
+    }
 }
 
 let currencyBridge = new CurrencyBridge();

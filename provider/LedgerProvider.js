@@ -20,7 +20,6 @@ import ethereumBridge from './bridge/EthereumBridge';
 import {apiForRipple} from './api/Ripple';
 import rippleBridge from './bridge/RippleBridge';
 import currencyBridge from './bridge/CurrencyBridge'
-import {open} from "@ledgerhq/live-common/lib/hw";
 
 const pino = require('pino');
 const log = pino({
@@ -92,17 +91,7 @@ class LedgerProvider extends Provider{
     this.device = device.device;
     if(!this.transport)
     {
-      let self = this;
-
-      open(device.id).then(transport => {
-        self.transport = transport;
-        self.transport.setDebugMode(true);
-      });
-
-/*  TransportNodeHid.create(undefined, true, 5000).then(transport => {
-        self.transport = transport;
-        self.transport.setDebugMode(true);
-      });*/
+      this.openTransport();
     }
   }
 
@@ -110,29 +99,54 @@ class LedgerProvider extends Provider{
   {
     log.info(`Removed device : ${JSON.stringify(device.descriptor)}` );
     this.transport = undefined;
-    this.device = undefined;
   }
 
   next(device){
     log.info(`OnNext device : Descriptor : ${JSON.stringify(device.descriptor)} Device :  ${JSON.stringify(device)}` );
       let self = this;
       if(device && device.type && device.type === 'add') {
-        try {
-          open(device.id).then(transport => {
-            self.device = device.device;
-            self.transport = transport;
-            self.transport.setDebugMode(true);
-          });
-        } catch (e) {
-          self.transport = undefined;
-          self.device = undefined;
-        }
+        this.openTransport();
+        self.device = device.device;
       }
       else if(device && device.type && device.type === 'remove')
       {
         self.transport = undefined;
-        self.device = undefined;
       }
+  }
+
+  openTransport() {
+    let self = this;
+    try {
+
+      console.log('Opening Transport ....');
+
+      TransportNodeHid.create(undefined, true, 5000).then(transport => {
+        self.transport = transport;
+        self.transport.setDebugMode(true);
+        console.log('Transport Opened !!!');
+      });
+      /*
+          open(device.device.path).then(transport => {
+            self.device = device.device;
+            self.transport = transport;
+            self.transport.setDebugMode(true);
+          });
+
+       */
+    } catch (e) {
+      self.transport = undefined;
+    }
+  }
+
+  async closeTransport()
+  {
+    if(this.transport) {
+      await this.transport
+          .close()
+          .catch(() => {
+          });
+      console.log('Transport Closed !!!');
+    }
   }
 
   async getAddressForCurrency(derivationPath : string , ccy : string) {

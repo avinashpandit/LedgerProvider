@@ -123,11 +123,6 @@ class LedgerProvider extends Provider{
             self.transport = transport;
             self.transport.setDebugMode(true);
           });
-         /* TransportNodeHid.create(undefined, true, 5000).then(transport => {
-            self.transport = transport;
-            self.device = device.device;
-            self.transport.setDebugMode(true);
-          });*/
         } catch (e) {
           self.transport = undefined;
           self.device = undefined;

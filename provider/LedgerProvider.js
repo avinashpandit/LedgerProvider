@@ -19,8 +19,8 @@ import {apiForBitcoin} from './api/Bitcoin';
 import ethereumBridge from './bridge/EthereumBridge';
 import {apiForRipple} from './api/Ripple';
 import rippleBridge from './bridge/RippleBridge';
-
-import currencyBridge from "@ledgerhq/live-common/lib/bridge/LibcoreCurrencyBridge";
+import currencyBridge from './bridge/CurrencyBridge'
+import {open} from "@ledgerhq/live-common/lib/hw";
 
 const pino = require('pino');
 const log = pino({
@@ -93,14 +93,21 @@ class LedgerProvider extends Provider{
     if(!this.transport)
     {
       let self = this;
-      TransportNodeHid.create(undefined, true, 5000).then(transport => {
+
+      open(this.device.id).then(transport => {
         self.transport = transport;
         self.transport.setDebugMode(true);
       });
+
+/*  TransportNodeHid.create(undefined, true, 5000).then(transport => {
+        self.transport = transport;
+        self.transport.setDebugMode(true);
+      });*/
     }
   }
 
-  onRemove(device){
+  onRemove(device)
+  {
     log.info(`Removed device : ${JSON.stringify(device.descriptor)}` );
     this.transport = undefined;
     this.device = undefined;
@@ -111,11 +118,15 @@ class LedgerProvider extends Provider{
       let self = this;
       if(device && device.type && device.type === 'add') {
         try {
-          TransportNodeHid.create(undefined, true, 5000).then(transport => {
+          open(this.device.id).then(transport => {
+            self.transport = transport;
+            self.transport.setDebugMode(true);
+          });
+         /* TransportNodeHid.create(undefined, true, 5000).then(transport => {
             self.transport = transport;
             self.device = device.device;
             self.transport.setDebugMode(true);
-          });
+          });*/
         } catch (e) {
           self.transport = undefined;
           self.device = undefined;

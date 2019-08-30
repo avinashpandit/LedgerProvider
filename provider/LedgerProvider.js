@@ -94,7 +94,7 @@ class LedgerProvider extends Provider{
     {
       let self = this;
 
-      open(this.device.id).then(transport => {
+      open(device.id).then(transport => {
         self.transport = transport;
         self.transport.setDebugMode(true);
       });
@@ -118,7 +118,8 @@ class LedgerProvider extends Provider{
       let self = this;
       if(device && device.type && device.type === 'add') {
         try {
-          open(this.device.id).then(transport => {
+          open(device.id).then(transport => {
+            self.device = device.device;
             self.transport = transport;
             self.transport.setDebugMode(true);
           });

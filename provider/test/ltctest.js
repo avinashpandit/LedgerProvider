@@ -1,11 +1,7 @@
 //import { RippleAPI } from 'ripple-lib';
-import "@babel/polyfill";
-
 import ledgerProvider from '../LedgerProvider';
 
-import {findCryptoCurrencyByTicker} from '@ledgerhq/live-common/lib/data/cryptocurrencies';
 import {deserializeError} from "@ledgerhq/errors";
-import {closeAllDevices} from "../tool/live-common-setup";
 
 import all from "../tool/commands";
 
@@ -20,7 +16,7 @@ async function main() {
     dbPath: process.env.LIBCORE_DB_PATH || "./dbdata"
   });
 */
-  const currency = findCryptoCurrencyByTicker('LTC');
+  //const currency = findCryptoCurrencyByTicker('LTC');
 
   let transport = await ledgerProvider.getBlockedTransport();
 
@@ -39,23 +35,18 @@ async function main() {
 
   await ledgerProvider.closeTransport();
 
-  if(currency){
-    if(currency.family === 'bitcoin')
-    {
-      bridge.signAndBroadcastTransaction(options).subscribe({
-        next: log => {
-          if (log !== undefined) console.log(log);
-        },
-        error: error => {
-          const e = error instanceof Error ? error : deserializeError(error);
-          if (process.env.VERBOSE) console.error(e);
-          else console.error(String(e.message || e));
-        },
-        complete: () => {
-          ledgerProvider.openTransport(ledgerProvider);
-        }
-      });
-    }
-  }
+    bridge.signAndBroadcastTransaction(options).subscribe({
+      next: log => {
+        if (log !== undefined) console.log(log);
+      },
+      error: error => {
+        const e = error instanceof Error ? error : deserializeError(error);
+        if (process.env.VERBOSE) console.error(e);
+        else console.error(String(e.message || e));
+      },
+      complete: () => {
+        ledgerProvider.openTransport(ledgerProvider);
+      }
+    });
 }
 main();

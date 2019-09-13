@@ -23,8 +23,6 @@ import {
   catchError
 } from "rxjs/operators";
 import fs from "fs";
-import qrcode from "qrcode-terminal";
-import { dataToFrames } from "qrloop/exporter";
 import { getEnv } from "@ledgerhq/live-common/lib/env";
 import { isValidRecipient } from "@ledgerhq/live-common/lib/libcore/isValidRecipient";
 import signAndBroadcast from "@ledgerhq/live-common/lib/libcore/signAndBroadcast";
@@ -88,14 +86,6 @@ const getFeesFormatters = {
     }
   }
 };
-
-const asQR = str =>
-  Observable.create(o =>
-    qrcode.generate(str, r => {
-      o.next(r);
-      o.complete();
-    })
-  );
 
 const all = {
   libcoreReset: {
@@ -256,44 +246,6 @@ const all = {
             return of(JSON.stringify(appjsondata));
           }
         })
-      )
-  },
-
-  exportAccounts: {
-    description: "Export given accounts to Live QR or console for importing",
-    args: [
-      ...scanCommonOpts,
-      {
-        name: "out",
-        alias: "o",
-        type: Boolean,
-        desc: "output to console"
-      }
-    ],
-    job: opts =>
-      scan(opts).pipe(
-        reduce((accounts, account) => accounts.concat(account), []),
-        mergeMap(accounts => {
-          const data = encode({
-            accounts,
-            settings: { currenciesSettings: {} },
-            exporterName: "ledger-live-cli",
-            exporterVersion: "0.0.0"
-          });
-          const frames = dataToFrames(data, 80, 4);
-
-          if (opts.out) {
-            return of(Buffer.from(JSON.stringify(frames)).toString("base64"));
-          } else {
-            const qrObservables = frames.map(str =>
-              asQR(str).pipe(shareReplay())
-            );
-            return interval(300).pipe(
-              mergeMap(i => qrObservables[i % qrObservables.length])
-            );
-          }
-        }),
-        tap(() => console.clear()) // eslint-disable-line no-console
       )
   },
 
@@ -608,7 +560,7 @@ const all = {
         concatMap(account =>
           concat(
             of(account.freshAddress),
-            opts.qr ? asQR(account.freshAddress) : empty(),
+            opts.qr ? account.freshAddress : empty(),
             withDevice(opts.device || "")(t =>
               from(
                 getAddress(t, {

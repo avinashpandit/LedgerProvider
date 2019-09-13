@@ -1,4 +1,6 @@
 //import { RippleAPI } from 'ripple-lib';
+import "@babel/polyfill";
+
 import ledgerProvider from '../LedgerProvider';
 
 import {deserializeError} from "@ledgerhq/errors";

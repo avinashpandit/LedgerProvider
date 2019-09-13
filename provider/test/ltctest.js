@@ -28,12 +28,21 @@ async function main() {
 
   let options = {
     "currency": "LTC",
-    "amount": "0.001",
+    "amount": "0.01",
     "recipient": [
       "M9eGEFa1cK79SWA12G23nQJ46jSKZSvkb1"
     ],
+    "xpub" : [''],
+    'scheme' : 'segwit',
+    'index' : 1,
     "length" : 1
   };
+
+    //'self-transaction': true,
+    //'index' : 1,
+    //"length" : 1
+//  };
+
 
   await ledgerProvider.closeTransport();
 

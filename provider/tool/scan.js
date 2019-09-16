@@ -124,6 +124,7 @@ export function scan(arg) {
     appjsonFile,
     scheme,
     index,
+    idx,
     length
   } = arg;
 
@@ -172,11 +173,11 @@ export function scan(arg) {
                 shortAddressPreview(xpub),
               xpub,
               seedIdentifier: xpub,
-              id: `libcore:1:${cur.id}:${xpub}:${derivationMode}`,
+              id: `libcore:1:bitcoin:${xpub}:${derivationMode}`,
               derivationMode,
               currency: cur,
               unit: cur.units[0],
-              index: index,
+              index: idx || 0,
               freshAddress: "",
               freshAddressPath: "",
               lastSyncDate: new Date(0),

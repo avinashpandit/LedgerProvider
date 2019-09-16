@@ -32,9 +32,11 @@ async function main() {
     "recipient": [
       "M9eGEFa1cK79SWA12G23nQJ46jSKZSvkb1"
     ],
-    "xpub" : [''],
+    //"xpub" : ['Ltub2Z8LKgDDug19ABzEdm9cJQjZFfWtCUBEBumQqsdd24bXcCBETriw1SKat2FrGCN9PAcZTaFn6NCkQQTpbs4zfjWWqz3e8sLu1qDZfbSFoGo'],
+    "xpub" : ['Ltub2Z8LKgDDug196j5VBL1fiqPcH6GQXJft6FQfxwp4of5RdM54JhwWAGRQ1MJoChbSMYBG984ou5L9EZftZQRP11fWr5WKLiuzRbr5sv7nS6g'],
     'scheme' : 'segwit',
-    'index' : 1,
+    //'index' : 1,
+    idx : 0,
     "length" : 1
   };
 

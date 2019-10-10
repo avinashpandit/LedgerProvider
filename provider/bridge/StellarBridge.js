@@ -4,6 +4,7 @@ import signTransactionForCurrency from '../helpers/signTransactionForCurrency';
 import {findCryptoCurrencyByTicker} from '@ledgerhq/live-common/lib/data/cryptocurrencies';
 import {apiForStellar} from '../api/Stellar';
 var StellarSdk = require('stellar-sdk');
+import {Transaction,Networks} from 'stellar-sdk';
 
 class StellarBridge extends Bridge {
 
@@ -37,7 +38,7 @@ class StellarBridge extends Bridge {
         amount: amount.toString(),
       }))
       // Make this transaction valid for the next 30 seconds only
-      .setTimeout(30)
+      .setTimeout(120)
       // Uncomment to add a memo (https://www.stellar.org/developers/learn/concepts/transactions.html)
       // .addMemo(StellarSdk.Memo.text('Hello world!'))
       .build();
@@ -50,16 +51,19 @@ class StellarBridge extends Bridge {
   }
 
   serializeTransaction(t, nonce: string) {
-    return t;
+    return t.toEnvelope().toXDR().toString("base64");
   }
 
   async signTransaction(transport, ccy , dvPath, t , nonce) {
     const currency = findCryptoCurrencyByTicker(ccy);
     var serializedTx = this.serializeTransaction(t , nonce);
 
-    let result = await signTransactionForCurrency(currency.family)(transport, currency.family, dvPath, serializedTx);
+    var transaction = new Transaction(serializedTx,Networks.PUBLIC);
 
-    return result;
+    let response = await signTransactionForCurrency(currency.family)(transport, currency.family, dvPath, transaction);
+    transaction.addSignature(transaction.source, response.signature.toString('base64'));
+
+    return transaction;
   }
 
 

@@ -112,26 +112,12 @@ export const apiForStellar = (currency: CryptoCurrency): API => {
       return await server.loadAccount(address);
     },
     async broadcastTransaction(tx) {
-      if(!api.isConnected()) {
-        await api.connect();
+      try {
+        let response = await server.submitTransaction(tx);
+        return {status : 'OK' , txId: response.hash};
       }
-      let resp = await api.submit(tx);
-      console.log(`Response from Ripple API ${JSON.stringify(resp)}`);
-      if(resp && (resp.resultCode === 'tesSUCCESS' || resp.resultCode === 'terQUEUED'))
-      {
-        if(resp.tx_json){
-          return {status : 'OK' , txId: resp.tx_json.hash};
-        }
-        else{
-          return {status : 'OK' , txId: '' , code: 'Unable to get TransactionID. Please verify backend Logs or account activity.'}
-        }
-      }
-      else if(resp && resp.tx_json)
-      {
-        return {status : 'ERROR' , txId: resp.tx_json.hash , code : `Response code ${resp.resultMessage}. Please verify backend Logs or account activity.`};
-      }
-      else{
-        return {status : 'ERROR' , txId: '' , code : `Unable to receive TX Details. TX unsuccessful. Response code ${resp.resultMessage}. Please verify backend Logs or account activity.`};
+      catch(e){
+        return {status : 'ERROR' , txId: '' , code : `Unable to receive TX Details. TX unsuccessful. Response code ${e}. Please verify backend Logs or account activity.`};
       }
     },
     //This is not required for Ripple

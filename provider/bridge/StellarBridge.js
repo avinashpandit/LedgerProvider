@@ -1,0 +1,70 @@
+// @flow
+import Bridge from '../Bridge';
+import signTransactionForCurrency from '../helpers/signTransactionForCurrency';
+import {findCryptoCurrencyByTicker} from '@ledgerhq/live-common/lib/data/cryptocurrencies';
+import {apiForStellar} from '../api/Stellar';
+var StellarSdk = require('stellar-sdk');
+
+class StellarBridge extends Bridge {
+
+  //ripple bridge needs access to api to perform certain functionality
+  constructor() {
+    super();
+    this.currency = findCryptoCurrencyByTicker('XLM');
+    this.api = apiForStellar(this.currency);
+  }
+
+  isRecipientValid(currency, recipient) {
+    return true;
+  }
+
+  async createTransaction(recipient: string, amount: number, source: string , tag: number) {
+
+    const account = await this.api.getAccount(source);
+    const fee = await this.api.fetchFees();
+
+    const transaction = new StellarSdk.TransactionBuilder(account, {
+      fee
+    })
+    // Add a payment operation to the transaction
+      .addOperation(StellarSdk.Operation.payment({
+        destination: recipient,
+        // The term native asset refers to lumens
+        asset: StellarSdk.Asset.native(),
+        // Specify 350.1234567 lumens. Lumens are divisible to seven digits past
+        // the decimal. They are represented in JS Stellar SDK in string format
+        // to avoid errors from the use of the JavaScript Number data structure.
+        amount: amount.toString(),
+      }))
+      // Make this transaction valid for the next 30 seconds only
+      .setTimeout(30)
+      // Uncomment to add a memo (https://www.stellar.org/developers/learn/concepts/transactions.html)
+      // .addMemo(StellarSdk.Memo.text('Hello world!'))
+      .build();
+
+    return transaction;
+  }
+
+  validateTransaction(tx, account) {
+
+  }
+
+  serializeTransaction(t, nonce: string) {
+    return JSON.parse(t.txJSON);
+  }
+
+  async signTransaction(transport, ccy , dvPath, t , nonce) {
+    const currency = findCryptoCurrencyByTicker(ccy);
+    var serializedTx = this.serializeTransaction(t , nonce);
+
+    let result = await signTransactionForCurrency(currency.family)(transport, currency.family, dvPath, serializedTx);
+
+    return result;
+  }
+
+
+}
+
+let stellarBridge = new StellarBridge();
+
+export default stellarBridge;

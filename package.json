@@ -65,7 +65,8 @@
     "uuid": "^3.2.1",
     "winston": "^3.0.0",
     "winston-transport": "^4.2.0",
-    "ws": "latest"
+    "ws": "latest",
+    "stellar-sdk": "^3.0.1"
   },
   "author": {
     "name": "Avinash Pandit",

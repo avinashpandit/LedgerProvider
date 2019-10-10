@@ -21,6 +21,8 @@ import {apiForRipple} from './api/Ripple';
 import rippleBridge from './bridge/RippleBridge';
 import currencyBridge from './bridge/CurrencyBridge'
 import {closeAllDevices} from "./tool/live-common-setup";
+import {apiForStellar} from './api/Stellar';
+import stellarBridge from './bridge/StellarBridge';
 
 const pino = require('pino');
 const log = pino({
@@ -169,18 +171,18 @@ class LedgerProvider extends Provider{
     try {
       const derivationModes = getDerivationModesForCurrency(currency);
       for (const derivationMode of derivationModes) {
-        let emptyCount = 0;
-        const mandatoryEmptyAccountSkip = getMandatoryEmptyAccountSkip(derivationMode);
-        const derivationScheme = getDerivationScheme({derivationMode, currency});
+          let emptyCount = 0;
+          const mandatoryEmptyAccountSkip = getMandatoryEmptyAccountSkip(derivationMode);
+          const derivationScheme = getDerivationScheme({derivationMode, currency});
         const stopAt = isIterableDerivationMode(derivationMode) ? 20 : 1;
-        for (let index = 0; index < stopAt; index++) {
-          const freshAddressPath = runDerivationScheme(derivationScheme, currency, {
+          for (let index = 0; index < stopAt; index++) {
+            const freshAddressPath = runDerivationScheme(derivationScheme, currency, {
             account: index,
-          });
+            });
 
-          let address = await this.getAddressForCurrency(freshAddressPath , ccy);
-          log.info('Address : ' + JSON.stringify(address));
-          addresses.push({dvPath : address.path , currency : ccy , pubKey : address.publicKey , address : address.address});
+            let address = await this.getAddressForCurrency(freshAddressPath, ccy);
+            log.info('Address : ' + JSON.stringify(address));
+            addresses.push({dvPath: address.path, currency: ccy, pubKey: address.publicKey, address: address.address});
         }
       }
 
@@ -208,6 +210,10 @@ class LedgerProvider extends Provider{
       {
         return apiForRipple(currency);
       }
+      else if(currency.family === 'stellar')
+      {
+        return apiForStellar(currency);
+      }
     }
   }
 
@@ -227,11 +233,14 @@ class LedgerProvider extends Provider{
         return rippleBridge;
       }
       else if(currency.family === 'bitcoin'){
-        return currencyBridge;
+          return currencyBridge;
+      }
+      else if(currency.family === 'stellar')
+      {
+        return stellarBridge;
       }
     }
   }
-
 }
 
 let ledgerProvider = new LedgerProvider();

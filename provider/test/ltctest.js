@@ -46,9 +46,12 @@ async function main() {
 //  };
 
 
+
+  let addresses  = await ledgerProvider.getAddressForCurrencyList('LTC');
+
   await ledgerProvider.closeTransport();
 
-    bridge.signAndBroadcastTransaction(options).subscribe({
+  bridge.signAndBroadcastTransaction(options).subscribe({
       next: log => {
         if (log !== undefined) console.log(log);
       },

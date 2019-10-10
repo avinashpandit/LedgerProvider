@@ -50,7 +50,7 @@ class StellarBridge extends Bridge {
   }
 
   serializeTransaction(t, nonce: string) {
-    return JSON.parse(t.txJSON);
+    return t;
   }
 
   async signTransaction(transport, ccy , dvPath, t , nonce) {

@@ -56,9 +56,7 @@ class StellarBridge extends Bridge {
 
   async signTransaction(transport, ccy , dvPath, t , nonce) {
     const currency = findCryptoCurrencyByTicker(ccy);
-    var serializedTx = this.serializeTransaction(t , nonce);
-
-    var transaction = new Transaction(serializedTx,Networks.PUBLIC);
+    var transaction = new Transaction(t,Networks.PUBLIC);
 
     let response = await signTransactionForCurrency(currency.family)(transport, currency.family, dvPath, transaction);
     transaction.addSignature(transaction.source, response.signature.toString('base64'));

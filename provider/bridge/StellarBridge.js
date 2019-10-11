@@ -4,7 +4,7 @@ import signTransactionForCurrency from '../helpers/signTransactionForCurrency';
 import {findCryptoCurrencyByTicker} from '@ledgerhq/live-common/lib/data/cryptocurrencies';
 import {apiForStellar} from '../api/Stellar';
 var StellarSdk = require('stellar-sdk');
-import {Transaction,Networks} from 'stellar-sdk';
+import {Transaction,Networks,Memo} from 'stellar-sdk';
 
 class StellarBridge extends Bridge {
 
@@ -23,8 +23,17 @@ class StellarBridge extends Bridge {
 
     const account = await this.api.getAccount(source);
     const fee = await this.api.fetchFees();
+    let memo;
+    if(tag)
+    {
+      memo = Memo.id(tag);
+    }
+    else{
+      memo = Memo.none();
+    }
 
     const transaction = new StellarSdk.TransactionBuilder(account, {
+      memo,
       fee
     })
     // Add a payment operation to the transaction

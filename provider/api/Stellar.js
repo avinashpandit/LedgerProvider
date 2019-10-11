@@ -2,6 +2,7 @@
 import type { CryptoCurrency } from '@ledgerhq/live-common/lib/types'
 import { BigNumber } from 'bignumber.js'
 var StellarSdk = require('stellar-sdk');
+import {Transaction,Networks} from 'stellar-sdk';
 
 export type Block = { height: number }
 export type Tx = {
@@ -113,7 +114,8 @@ export const apiForStellar = (currency: CryptoCurrency): API => {
     },
     async broadcastTransaction(tx) {
       try {
-        let response = await server.submitTransaction(tx);
+        let transaction = new Transaction(tx,Networks.PUBLIC);
+        let response = await server.submitTransaction(transaction);
         return {status : 'OK' , txId: response.hash};
       }
       catch(e){

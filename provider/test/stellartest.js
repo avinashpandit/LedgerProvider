@@ -20,10 +20,9 @@ async function main() {
 
   let baseTX = await bridge.createTransaction("GC55N52EX7UPQ72LR76QIJX6TXY7WJTSARXRJXLZ7FXKIWFCFOU5PTCL", .1, "GADRJZAZ6CVU4MMET2YN63VTNCSERGIWDQNSEF4XHGDJHFYLLOUZBZDR");
 
-  let baseSerializedTx = bridge.serializeTransaction(baseTX);
-  console.log(baseSerializedTx);
+  console.log(baseTX);
 
-  let signedTransaction = await bridge.signTransaction(transport, currency.ticker, "44'/148'/0'" , baseSerializedTx);
+  let signedTransaction = await bridge.signTransaction(transport, currency.ticker, "44'/148'/0'" , baseTX);
 
   let transactionResponse = await API.broadcastTransaction(signedTransaction);
 

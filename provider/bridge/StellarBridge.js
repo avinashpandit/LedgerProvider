@@ -61,7 +61,7 @@ class StellarBridge extends Bridge {
     let response = await signTransactionForCurrency(currency.family)(transport, currency.family, dvPath, transaction);
     transaction.addSignature(transaction.source, response.signature.toString('base64'));
 
-    return transaction;
+    return this.serializeTransaction(transaction);
   }
 
 

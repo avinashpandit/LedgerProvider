@@ -43,7 +43,7 @@ class StellarBridge extends Bridge {
       // .addMemo(StellarSdk.Memo.text('Hello world!'))
       .build();
 
-    return transaction;
+    return this.serializeTransaction(transaction);
   }
 
   validateTransaction(tx, account) {

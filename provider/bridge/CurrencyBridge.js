@@ -37,6 +37,11 @@ class CurrencyBridge extends Bridge {
     signAndBroadcastTransaction(options) {
         return from(allCommands.send.job(options));
     }
+
+    syncAccount(options) {
+        return from(allCommands.sync.job(options));
+    }
+
 }
 
 let currencyBridge = new CurrencyBridge();

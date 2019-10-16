@@ -4,6 +4,7 @@ import { BigNumber } from 'bignumber.js'
 import { LedgerAPINotAvailable } from "@ledgerhq/errors";
 import network from './network'
 import { blockchainBaseURL } from './Ledger'
+import {getEstimatedFees} from './Fees';
 
 export type Block = { height: number } // TODO more fields actually
 export type Tx = {
@@ -29,8 +30,8 @@ export type Tx = {
 
 export type API = {
   getTransactions: (
-    address: string,
-    blockHash: ?string,
+      address: string,
+      blockHash: ?string,
   ) => Promise<{
     truncated: boolean,
     txs: Tx[],
@@ -77,7 +78,7 @@ export const apiForEther = (currency: CryptoCurrency): API => {
         url: `${baseURL}/transactions/send`,
         data: { tx },
       })
-      return data.result
+      return {status : 'OK' , txId: data.result};
     },
     async getAccountBalance(address) {
       const { data } = await network({
@@ -87,5 +88,30 @@ export const apiForEther = (currency: CryptoCurrency): API => {
       // FIXME precision lost here. nothing we can do easily
       return BigNumber(data[0].balance)
     },
+    async getEstimatedFees()
+    {
+      let fees = await getEstimatedFees(currency);
+      //100 gWei -- this is going to be max price if nothing comes from estimatedFees
+      let maxFees = BigNumber(100000000000);
+      //10 gWei -- this is going to be min price
+      let minFees = BigNumber(10000000000);
+      if(fees && fees.gas_price)
+      {
+        if(BigNumber(fees.gas_price).isGreaterThan(maxFees))
+        {
+          return maxFees;
+        }
+        else if(BigNumber(fees.gas_price).isLessThan(minFees))
+        {
+          return minFees;
+        }
+        else{
+          return BigNumber(fees.gas_price);
+        }
+      }
+      else{
+        return maxFees;
+      }
+    }
   }
 }

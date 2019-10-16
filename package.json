@@ -1,6 +1,6 @@
 {
   "name": "hw-ledger-provider",
-  "version": "1.1.26",
+  "version": "1.1.27",
   "description": "Combined one package for interacting with Ledger device and Ledger API - Using LedgerJS , Ledger commons , Ledger common live ",
   "homepage": "http://coinagg.com",
   "scripts": {
@@ -8,6 +8,7 @@
     "prepack:babel": "babel provider/ -d lib",
     "prepack:flow": "flow-copy-source src lib",
     "ltcTest": "babel-node ./provider/test/ltctest.js",
+    "ethTest": "babel-node ./provider/test/ethtest.js",
     "stellarTest": "babel-node ./provider/test/stellartest.js",
     "scan": "babel-node ./provider/tool/cli.js"
   },

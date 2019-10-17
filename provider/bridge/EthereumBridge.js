@@ -29,8 +29,8 @@ class EthereumBridge extends Bridge {
     }
   }
 
-  async createTransaction(recipient: string, amount: number , source : string) {
-    return {amount: BigNumber(amount), recipient: recipient, gasPrice: BigNumber(0x2540BE400), gasLimit: BigNumber(0x5208)};
+  async createTransaction(recipient: string, amount: number , source : string , tag: string, fees : BigNumber ) {
+    return {amount: BigNumber(amount), recipient: recipient, gasPrice: fees, gasLimit: BigNumber(0xC350)};
   }
 
   validateTransaction(tx, account) {

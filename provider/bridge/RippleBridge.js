@@ -17,7 +17,7 @@ class RippleBridge extends Bridge {
     return this.api.isValidAddress(recipient);
   }
 
-  async createTransaction(recipient: string, amount: number, source: string) {
+  async createTransaction(recipient: string, amount: number, source: string , tag: number) {
     const payment = {
       'source': {
         'address': source,
@@ -34,7 +34,13 @@ class RippleBridge extends Bridge {
         }
       }
     };
-    return await this.api.preparePayment(source, payment);
+
+    if(tag)
+    {
+      payment['destination'].tag = parseInt(tag);
+    }
+
+    return await this.api.preparePayment(source, payment , {'maxLedgerVersionOffset' : 20});
   }
 
   validateTransaction(tx, account) {

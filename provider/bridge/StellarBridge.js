@@ -4,7 +4,7 @@ import signTransactionForCurrency from '../helpers/signTransactionForCurrency';
 import {findCryptoCurrencyByTicker} from '@ledgerhq/live-common/lib/data/cryptocurrencies';
 import {apiForStellar} from '../api/Stellar';
 var StellarSdk = require('stellar-sdk');
-import {Transaction,Networks,Memo} from 'stellar-sdk';
+import {Transaction,Networks, Memo} from 'stellar-sdk';
 
 class StellarBridge extends Bridge {
 
@@ -32,25 +32,26 @@ class StellarBridge extends Bridge {
       memo = Memo.none();
     }
 
+
     const transaction = new StellarSdk.TransactionBuilder(account, {
       memo,
       fee
     })
     // Add a payment operation to the transaction
-      .addOperation(StellarSdk.Operation.payment({
-        destination: recipient,
-        // The term native asset refers to lumens
-        asset: StellarSdk.Asset.native(),
-        // Specify 350.1234567 lumens. Lumens are divisible to seven digits past
-        // the decimal. They are represented in JS Stellar SDK in string format
-        // to avoid errors from the use of the JavaScript Number data structure.
-        amount: amount.toString(),
-      }))
-      // Make this transaction valid for the next 30 seconds only
-      .setTimeout(120)
-      // Uncomment to add a memo (https://www.stellar.org/developers/learn/concepts/transactions.html)
-      // .addMemo(StellarSdk.Memo.text('Hello world!'))
-      .build();
+        .addOperation(StellarSdk.Operation.payment({
+          destination: recipient,
+          // The term native asset refers to lumens
+          asset: StellarSdk.Asset.native(),
+          // Specify 350.1234567 lumens. Lumens are divisible to seven digits past
+          // the decimal. They are represented in JS Stellar SDK in string format
+          // to avoid errors from the use of the JavaScript Number data structure.
+          amount: amount.toString(),
+        }))
+        // Make this transaction valid for the next 30 seconds only
+        .setTimeout(120)
+        // Uncomment to add a memo (https://www.stellar.org/developers/learn/concepts/transactions.html)
+        // .addMemo(StellarSdk.Memo.text('Hello world!'))
+        .build();
 
     return this.serializeTransaction(transaction);
   }
@@ -72,8 +73,6 @@ class StellarBridge extends Bridge {
 
     return this.serializeTransaction(transaction);
   }
-
-
 }
 
 let stellarBridge = new StellarBridge();

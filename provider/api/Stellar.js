@@ -26,8 +26,8 @@ var server = new StellarSdk.Server('https://horizon.stellar.org');
 
 export type API = {
   getTransactions: (
-    address: string,
-    blockHash: ?string,
+      address: string,
+      blockHash: ?string,
   ) => Promise<{
     truncated: boolean,
     txs: Tx[],
@@ -38,7 +38,7 @@ export const apiForStellar = (currency: CryptoCurrency): API => {
 
   return {
 
-  async getTransactions(address, blockHash) {
+    async getTransactions(address, blockHash) {
       let data;
       if(blockHash){
         data = await server.payments().forAccount(address).cursor(blockHash).call();

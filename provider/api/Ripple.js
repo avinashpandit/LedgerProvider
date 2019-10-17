@@ -28,8 +28,8 @@ const api = new RippleAPI({
 
 export type API = {
   getTransactions: (
-    address: string,
-    blockHash: ?string,
+      address: string,
+      blockHash: ?string,
   ) => Promise<{
     truncated: boolean,
     txs: Tx[],
@@ -52,47 +52,47 @@ export const apiForRipple = (currency: CryptoCurrency): API => {
         data = await api.getTransactions(address, {earliestFirst: true , excludeFailures: true});
       }
 
-          //logic to translate bitcoin specific transaction model to generic tx model containing to , from , value
-          let newTxns = [];
-          if(data && data.length > 0)
-          {
-            data.forEach(txn => {
-              //check inputs and outputs length > 0
-              if (txn && txn.type === 'payment') {
-                let outcome = txn.outcome;
-                let specification = txn.specification;
-                if (outcome && outcome.balanceChanges && specification && specification.source && specification.destination) {
-                  let amountDetails;
-                  if (address === specification.source.address) {
-                    amountDetails = outcome.balanceChanges[specification.destination.address];
-                  } else if (address === specification.destination.address) {
-                    amountDetails = outcome.balanceChanges[specification.destination.address];
-                  }
-
-                  if(!amountDetails){
-                    console.log(`Unrecognized TX : ${JSON.stringify(txn)}`);
-                  }
-
-                  if (amountDetails && amountDetails.length === 1 && amountDetails[0]['currency'] === 'XRP' && amountDetails[0]['value']) {
-                    let newTxn = {};
-                    newTxn.hash = txn.id;
-                    newTxn.received_at = outcome.timestamp;
-                    let amt = new BigNumber(amountDetails[0]['value']).toNumber();
-                    newTxn.value = amt;
-                    newTxn.from = specification.source.address;
-                    newTxn.to = specification.destination.address;
-                    newTxn.block = {hash: txn.id};
-                    newTxn.confirmations = 1;
-                    newTxns.push(newTxn);
-                  }
-                }
+      //logic to translate bitcoin specific transaction model to generic tx model containing to , from , value
+      let newTxns = [];
+      if(data && data.length > 0)
+      {
+        data.forEach(txn => {
+          //check inputs and outputs length > 0
+          if (txn && txn.type === 'payment') {
+            let outcome = txn.outcome;
+            let specification = txn.specification;
+            if (outcome && outcome.balanceChanges && specification && specification.source && specification.destination) {
+              let amountDetails;
+              if (address === specification.source.address) {
+                amountDetails = outcome.balanceChanges[specification.destination.address];
+              } else if (address === specification.destination.address) {
+                amountDetails = outcome.balanceChanges[specification.destination.address];
               }
-            });
+
+              if(!amountDetails){
+                console.log(`Unrecognized TX : ${JSON.stringify(txn)}`);
+              }
+
+              if (amountDetails && amountDetails.length === 1 && amountDetails[0]['currency'] === 'XRP' && amountDetails[0]['value']) {
+                let newTxn = {};
+                newTxn.hash = txn.id;
+                newTxn.received_at = outcome.timestamp;
+                let amt = new BigNumber(amountDetails[0]['value']).toNumber();
+                newTxn.value = amt;
+                newTxn.from = specification.source.address;
+                newTxn.to = specification.destination.address;
+                newTxn.block = {hash: txn.id};
+                newTxn.confirmations = 1;
+                newTxns.push(newTxn);
+              }
+            }
           }
-          let newData = {};
-          newData.truncated = false;
-          newData.txs = newTxns;
-          return newData;
+        });
+      }
+      let newData = {};
+      newData.truncated = false;
+      newData.txs = newTxns;
+      return newData;
     },
     async getAccountBalance(address) {
       if(!api.isConnected()) {
@@ -118,23 +118,38 @@ export const apiForRipple = (currency: CryptoCurrency): API => {
       }
       return await api.isValidAddress("address");
     },
-    async preparePayment(source, payment) {
+    async preparePayment(source, payment , instructions) {
       if(!api.isConnected()) {
         await api.connect();
       }
-      return await api.preparePayment(source, payment);
+      return await api.preparePayment(source, payment , instructions);
     },
     async broadcastTransaction(tx) {
       if(!api.isConnected()) {
         await api.connect();
       }
       let resp = await api.submit(tx);
-      if(resp && resp.resultCode === 'tesSUCCESS')
+      console.log(`Response from Ripple API ${JSON.stringify(resp)}`);
+      if(resp && (resp.resultCode === 'tesSUCCESS' || resp.resultCode === 'terQUEUED'))
       {
-        return resp.tx_json ? resp.tx_json.hash : '';
+        if(resp.tx_json){
+          return {status : 'OK' , txId: resp.tx_json.hash};
+        }
+        else{
+          return {status : 'OK' , txId: '' , code: 'Unable to get TransactionID. Please verify backend Logs or account activity.'}
+        }
       }
-      return '';
+      else if(resp && resp.tx_json)
+      {
+        return {status : 'ERROR' , txId: resp.tx_json.hash , code : `Response code ${resp.resultMessage}. Please verify backend Logs or account activity.`};
+      }
+      else{
+        return {status : 'ERROR' , txId: '' , code : `Unable to receive TX Details. TX unsuccessful. Response code ${resp.resultMessage}. Please verify backend Logs or account activity.`};
+      }
     },
-
+    //This is not required for Ripple
+    async getEstimatedFees()
+    {
+    }
   }
 }

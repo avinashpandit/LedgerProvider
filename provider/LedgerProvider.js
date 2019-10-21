@@ -76,7 +76,7 @@ class LedgerProvider extends Provider{
   async getBlockedTransport()
   {
 
-    for(let i=0; i< 10; i++)
+    for(let i=0; i< 5; i++)
     {
       log.info('Trying to connect to Ledger Device ...');
       if(this.transport)
@@ -84,7 +84,7 @@ class LedgerProvider extends Provider{
         return this.transport;
       }
 
-      await this.sleep(5000);
+      await this.sleep(3000);
     }
     return this.transport;
   }
@@ -149,6 +149,7 @@ class LedgerProvider extends Provider{
           .catch(() => {
           });
       console.log('Transport Closed !!!');
+      this.transport = undefined;
     }
   }
 

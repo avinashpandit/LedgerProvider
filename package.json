@@ -9,6 +9,7 @@
     "prepack:flow": "flow-copy-source src lib",
     "ltcTest": "babel-node ./provider/test/ltctest.js",
     "ethTest": "babel-node ./provider/test/ethtest.js",
+    "btcTest": "babel-node ./provider/test/btctest.js",
     "stellarTest": "babel-node ./provider/test/stellartest.js",
     "scan": "babel-node ./provider/tool/cli.js"
   },

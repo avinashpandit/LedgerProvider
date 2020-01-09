@@ -54,6 +54,8 @@ export const apiForEther = (currency: CryptoCurrency): API => {
     }
     return {
         async getTransactions(address, blockHash) {
+            let self = this;
+            console.log(`Getting txs for ${address} ${getCurrencyExplorer(currency).version}`);
             let { data } = await network({
                 method: "GET",
                 url: `${baseURL}/addresses/${address}/transactions`,
@@ -71,11 +73,26 @@ export const apiForEther = (currency: CryptoCurrency): API => {
                         }
             });
             // v3 have a bug that still includes the tx of the paginated block_hash, we're cleaning it up
-            if (blockHash && getCurrencyExplorer(currency).version === "v3") {
-                data = {
-                    ...data,
-                    txs: data.txs.filter(tx => !tx.block || tx.block.hash !== blockHash)
-                };
+            if (getCurrencyExplorer(currency).version === "v3") {
+
+                if(blockHash) {
+                    data = {
+                        ...data,
+                        txs: data.txs.filter(tx => !tx.block || tx.block.hash !== blockHash)
+                    };
+                }
+
+                //make sure get current block and compute confirmations as it's not available as part of v3
+                let currentBlock = await self.getCurrentBlock();
+
+                if(currentBlock && currentBlock.height){
+                    data.txs.forEach(txn => {
+                        if(txn && txn.block && txn.block.height){
+                            txn.confirmations = currentBlock.height - txn.block.height;
+                            txn.confirmations = txn.confirmations > 0 ?  txn.confirmations : 0;
+                        }
+                    });
+                }
             }
             return data;
         },

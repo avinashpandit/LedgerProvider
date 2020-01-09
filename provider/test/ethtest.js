@@ -1,7 +1,5 @@
-//import { RippleAPI } from 'ripple-lib';
 import ledgerProvider from '../LedgerProvider';
 import {findCryptoCurrencyByTicker} from '@ledgerhq/live-common/lib/data/cryptocurrencies';
-import {apiForRipple} from '../api/Ripple';
 import BigNumber from "bignumber.js";
 
 
@@ -28,8 +26,13 @@ async function main() {
     withdrawAmount = withdrawAmount.toNumber();
 
     let balance = await API.getAccountBalance('0xB108C555ceA52D544a7C00d13e94105Ca73AA5ce');
+
+
     console.log(`${balance}`);
-    let baseTX = await bridge.createTransaction(address, withdrawAmount, '0xB108C555ceA52D544a7C00d13e94105Ca73AA5ce');
+
+    let transactions = await API.getTransactions('0xB108C555ceA52D544a7C00d13e94105Ca73AA5ce');
+    console.log(transactions);
+    let baseTX = await bridge.createTransaction(address, withdrawAmount, '0xB108C555ceA52D544a7C00d13e94105Ca73AA5ce', undefined , new BigNumber(5));
 
     //get nounce
     let nonce;

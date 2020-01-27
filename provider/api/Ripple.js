@@ -83,6 +83,7 @@ export const apiForRipple = (currency: CryptoCurrency): API => {
                 newTxn.to = specification.destination.address;
                 newTxn.block = {hash: txn.id};
                 newTxn.confirmations = 1;
+                newTxn.memo = specification.destination.tag ? specification.destination.tag.toString() : undefined;
                 newTxns.push(newTxn);
               }
             }

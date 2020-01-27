@@ -10,7 +10,7 @@ export type Fees = {
   [_: string]: number,
 }
 
-const cache = LRU({
+const cache = new LRU({
   maxAge: 5 * 60 * 1000,
 })
 

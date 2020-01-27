@@ -41,18 +41,21 @@ export const apiForStellar = (currency: CryptoCurrency): API => {
     async getTransactions(address, blockHash) {
       let data;
       if(blockHash){
-        data = await server.payments().forAccount(address).cursor(blockHash).call();
+        data = await server.payments().forAccount(address).cursor(blockHash).limit(100).call();
       }
       else{
-        data = await server.payments().forAccount(address).cursor(0).call();
+        data = await server.payments().forAccount(address).cursor(0).limit(100).call();
       }
 
       //logic to translate bitcoin specific transaction model to generic tx model containing to , from , value
       let newTxns = [];
       if(data && data.records && data.records.length > 0)
       {
-        data.records.forEach(txn => {
+        for(let txn of data.records)
+        {
           //check inputs and outputs length > 0
+          let transactionRecord = await txn.transaction();
+          //console.log(`Transaction memo record ${transactionRecord.memo}`);
           if (txn && txn.type === 'payment' && txn.asset_type === 'native' && txn.transaction_successful) {
             let newTxn = {};
             newTxn.hash = txn.transaction_hash;
@@ -63,6 +66,7 @@ export const apiForStellar = (currency: CryptoCurrency): API => {
             newTxn.to = txn.to;
             newTxn.block = {hash: txn.id};
             newTxn.confirmations = 1;
+            newTxn.memo = transactionRecord.memo;
             newTxns.push(newTxn);
           }
           else if(txn && txn.type === 'create_account' && txn.transaction_successful){
@@ -75,9 +79,10 @@ export const apiForStellar = (currency: CryptoCurrency): API => {
             newTxn.to = txn.account;
             newTxn.block = {hash: txn.id};
             newTxn.confirmations = 1;
+            newTxn.memo = transactionRecord.memo;
             newTxns.push(newTxn);
           }
-        });
+        }
       }
       let newData = {};
       newData.truncated = false;

@@ -3,6 +3,8 @@ import type { CryptoCurrency } from '@ledgerhq/live-common/lib/types'
 import { LedgerAPINotAvailable } from '@ledgerhq/errors'
 import network from './network'
 import { blockchainBaseURL } from './Ledger'
+import {BigNumber} from 'bignumber.js';
+import {getEstimatedFees} from './Fees';
 
 export type Block = { height: number } // TODO more fields actually
 export type Tx = {
@@ -87,7 +89,7 @@ export const apiForBitcoin = (currency: CryptoCurrency): API => {
                     from = froms[0];
                   }
                   else if(froms.length > 1){
-                    from = 'MULTI';
+                    from = froms.toString();
                   }
 
                   if(from && value > 0)
@@ -120,7 +122,7 @@ export const apiForBitcoin = (currency: CryptoCurrency): API => {
                       to = tos[0];
                     }
                     else{
-                      to = 'MULTI';
+                      to = tos.toString();
                     }
 
                     if(to)
@@ -163,6 +165,74 @@ export const apiForBitcoin = (currency: CryptoCurrency): API => {
         data: { tx },
       })
       return data.result
+    },
+    async getAccountBalance(address , blockHash) {
+      const { data } = await network({
+        method: 'GET',
+        url: `${baseURL}/addresses/${address}/transactions`,
+        params: { blockHash, noToken: 1 },
+      });
+
+      let balance = 0;
+      if(data.txs && data.txs.length > 0)
+      {
+        data.txs.forEach(tx =>
+        {
+
+          let localBalance = 0;
+          tx.outputs.forEach(output => {
+            if (output.address === address) {
+              localBalance += output.value;
+            }
+          });
+          tx.inputs.forEach(input => {
+            if (input.address === address) {
+              localBalance -= input.value;
+            }
+          });
+          balance += localBalance;
+        });
+      }
+      return BigNumber(balance);
+    },
+    async getEstimatedFees()
+    {
+      let fees = await getEstimatedFees(currency);
+      //100 gWei -- this is going to be max price if nothing comes from estimatedFees
+      let maxFees = BigNumber(100);
+      let minFees = BigNumber(1);
+      if(currency.ticker === 'LTC')
+      {
+          maxFees = BigNumber(1000);
+      }
+      else if(currency.ticker === 'BCH')
+      {
+        maxFees = BigNumber(1000);
+      }
+      else if(currency.ticker === 'BTC')
+      {
+        maxFees = BigNumber(100);
+      }
+
+      if(fees && fees['1'])
+      {
+        let fastFees = BigNumber(fees['1']).dividedBy(1000).integerValue(BigNumber.ROUND_CEIL);
+
+        if(fastFees.isGreaterThan(maxFees))
+        {
+          return maxFees;
+        }
+        else if(fastFees.isLessThan(minFees))
+        {
+          return minFees;
+        }
+        else{
+          return fastFees;
+        }
+      }
+      else{
+        return maxFees;
+      }
     }
   }
 }

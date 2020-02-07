@@ -5,21 +5,21 @@ import BigNumber from "bignumber.js";
 
 async function main() {
 
-  const address = '0xc892A4Dc36ffD6244d29f0cEC1dD222eB92CFB71';
+  const address = '0xb108c555cea52d544a7c00d13e94105ca73aa5ce';
 
   const currency = findCryptoCurrencyByTicker('ETH');
 
-  let transport = await ledgerProvider.getBlockedTransport();
+  /*let transport = await ledgerProvider.getBlockedTransport();
 
   let device = ledgerProvider.getLedgerDevice();
 
   let bridge = await ledgerProvider.getBridge('ETH');
-
+*/
   let API = await ledgerProvider.getAPI('ETH');
 
   let amount = 0.1;
 
-  if (bridge && API) {
+  if (API) {
     //check if account balance > withdrawal amount
     //update tx with account info
     let withdrawAmount = BigNumber(amount).multipliedBy(Math.pow(10, 18));
@@ -32,7 +32,7 @@ async function main() {
 
     let transactions = await API.getTransactions('0xB108C555ceA52D544a7C00d13e94105Ca73AA5ce');
     console.log(transactions);
-    let baseTX = await bridge.createTransaction(address, withdrawAmount, '0xB108C555ceA52D544a7C00d13e94105Ca73AA5ce', undefined , new BigNumber(5));
+    /*let baseTX = await bridge.createTransaction(address, withdrawAmount, '0xB108C555ceA52D544a7C00d13e94105Ca73AA5ce', undefined , new BigNumber(5));
 
     //get nounce
     let nonce;
@@ -46,7 +46,7 @@ async function main() {
 
     let transactionResponse = await API.broadcastTransaction(signedTransaction);
 
-    console.log(`Status : ${transactionResponse.status} txid : ${transactionResponse.txId}`);
+    console.log(`Status : ${transactionResponse.status} txid : ${transactionResponse.txId}`);*/
 
   }
 

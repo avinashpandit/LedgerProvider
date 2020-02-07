@@ -5,6 +5,10 @@ import type { CryptoCurrency } from '@ledgerhq/live-common/lib/types'
 import network from "./network";
 import { blockchainBaseURL, getCurrencyExplorer } from "@ledgerhq/live-common/lib/api/Ledger";
 import { getEstimatedFees } from "@ledgerhq/live-common/lib/api/Fees";
+const abiDecoder = require('abi-decoder');
+const fs = require('fs');
+const ERC20ABI = JSON.parse(fs.readFileSync('./ERC20-abi.json', 'utf8'));
+abiDecoder.addABI(ERC20ABI);
 
 export type Block = { height: number }; // TODO more fields actually
 
@@ -27,7 +31,17 @@ export type Tx = {
         time: string
     },
     confirmations: number,
-    status: number
+    status: number,
+    decodedInput?: {
+        name : string,
+        params?: [
+            {
+                name: string,
+                value: string,
+                type: string
+            }
+        ]
+    }
 };
 
 export type API = {
@@ -90,6 +104,13 @@ export const apiForEther = (currency: CryptoCurrency): API => {
                         if(txn && txn.block && txn.block.height){
                             txn.confirmations = currentBlock.height - txn.block.height;
                             txn.confirmations = txn.confirmations > 0 ?  txn.confirmations : 0;
+                        }
+
+                        //try to decode input only if value == 0
+                        if(txn && txn.value === 0 && txn.input){
+                            //do ERC20 abi decoding
+                            let decodedData = abiDecoder.decodeMethod(txn.input);
+                            txn.decodedInput = decodedData;
                         }
                     });
                 }

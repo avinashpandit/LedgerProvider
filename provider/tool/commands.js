@@ -521,30 +521,6 @@ const all = {
       )
   },
 
-  getFees: {
-    description: "Get the currency fees for accounts",
-    args: [
-      ...scanCommonOpts,
-      {
-        name: "format",
-        alias: "f",
-        type: String,
-        typeDesc: Object.keys(getFeesFormatters).join(" | "),
-        desc: "how to display the data"
-      }
-    ],
-    job: opts =>
-      scan(opts).pipe(
-        mergeMap(account => from(getFees(account))),
-        map(e => {
-          const f = getFeesFormatters[opts.format || "summary"];
-          if (!f)
-            throw new Error("getFees: no such formatter '" + opts.format + "'");
-          return f(e);
-        })
-      )
-  },
-
   receive: {
     description: "Receive crypto-assets (verify on device)",
     args: [

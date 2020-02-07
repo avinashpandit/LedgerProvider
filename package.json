@@ -42,7 +42,6 @@
     "@ledgerhq/ledger-core": "3.11.0",
     "@ledgerhq/live-common": "7.15.4",
     "@ledgerhq/logs": "^4.68.2",
-    "abi-decoder": "^2.3.0",
     "axios": "^0.18.0",
     "bignumber.js": "^8.0.2",
     "bimap": "0.0.15",

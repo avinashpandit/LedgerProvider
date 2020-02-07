@@ -83,7 +83,7 @@ export const apiForEther = (currency: CryptoCurrency): API => {
                             batch_size: 2000,
                             no_token: true,
                             block_hash: blockHash,
-                            partial: true
+                            partial: false
                         }
             });
             // v3 have a bug that still includes the tx of the paginated block_hash, we're cleaning it up

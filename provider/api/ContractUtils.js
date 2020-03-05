@@ -2,10 +2,11 @@ const Tx = require('ethereumjs-tx').Transaction;
 
 const BN = require('bignumber.js');
 const fs = require('fs');
-import axios from 'axios';
 
 const Web3 = require('web3');
-const web3 = new Web3( new Web3.providers.WebsocketProvider('wss://mainnet.infura.io/ws/v3/db2ee91f04bc44a281aae437e28d5b6b'));
+const web3 = new Web3( new Web3.providers.WebsocketProvider(process.env.WSProvider));
+
+//WSProvider=wss://mainnet.infura.io/ws/v3/db2ee91f04bc44a281aae437e28d5b6b
 //const web3 = new Web3( new Web3.providers.WebsocketProvider('ws://192.168.1.68:8546'));
 
 const ERC20ABI = JSON.parse(fs.readFileSync(process.env.PWD + '/provider/api' + '/ERC20-abi.json', 'utf8'));
@@ -147,6 +148,48 @@ class ContractUtils {
   getWeb3()
   {
     return this.web3;
+  }
+
+  //subscribe token events with filter
+  subscirbeTokeEvents(ccy,filter,START_BLOCK,callback)
+  {
+    let contractDetails = this.getContractDetails(ccy);
+    let contractInstance = this.getContractInstance(contractDetails);
+    if(!contractInstance)
+    {
+      return false;
+    }
+
+    let self = this;
+    contractInstance.events.Transfer({
+      filter,
+      fromBlock: START_BLOCK
+    })
+        .on('data', async function(event){
+          let tx = {
+            block : {hash : event.blockHash , height : event.blockNumber},
+            from : event.returnValues.from,
+            to : event.returnValues.to,
+            hash : event.transactionHash,
+            value : event.returnValues.value,
+            valueInCcy : self.getBalanceFromUNIT(event.returnValues.value , contractDetails.decimals ),
+            ccy : ccy
+          };
+
+          // Add number of confirmations
+          let currentBlock = await self.getWeb3().eth.getBlockNumber();
+          if(event.blockNumber && currentBlock){
+            tx.confirmations = currentBlock - event.blockNumber;
+          }
+          //console.log(`Contract Tx : ${JSON.stringify(tx)}`); // same results as the optional callback above
+          callback(tx);
+        })
+        .on('changed', function(event){
+          // remove event from local database
+        })
+        .on('error', console.error);
+
+    return true;
   }
 
 }

@@ -1,68 +1,228 @@
-import ledgerProvider from '../LedgerProvider';
-import {findCryptoCurrencyByTicker} from '@ledgerhq/live-common/lib/data/cryptocurrencies';
 import BigNumber from "bignumber.js";
+import {contractUtils} from '../api/ContractUtils';
+import type from "@ledgerhq/live-common/lib/types/index";
+import {Observable} from 'rxjs/Rx';
 
+
+let filter = {  'to': ['0xc892A4Dc36ffD6244d29f0cEC1dD222eB92CFB71' ]};
+
+let web3 = contractUtils.getWeb3();
 
 async function main() {
 
-  const address = '0xb108c555cea52d544a7c00d13e94105ca73aa5ce';
+  const address = '0xc892A4Dc36ffD6244d29f0cEC1dD222eB92CFB71';
 
-  const currency = findCryptoCurrencyByTicker('ETH');
+    let balance = await contractUtils.getContractBalance({symbol : 'ETH' , address , decimals : 18} , address);
 
-  /*let transport = await ledgerProvider.getBlockedTransport();
+  let batBalance = await contractUtils.getContractBalance(contractUtils.getContractDetails('BAT') , address);
 
-  let device = ledgerProvider.getLedgerDevice();
+  let contractInstance = contractUtils.getContractInstance(contractUtils.getContractDetails('KNC'));
 
-  let bridge = await ledgerProvider.getBridge('ETH');
+  const START_BLOCK = 9507282;
+  const END_BLOCK = 9607283;
+    /*
+    export type Tx = {
+        hash: string,
+        received_at: string,
+        nonce: string,
+        value: number,
+        gas: number,
+        gas_price: number,
+        cumulative_gas_used: number,
+        gas_used: number,
+        from: string,
+        to: string,
+        input: string,
+        index: number,
+        block?: {
+            hash: string,
+            height: number,
+            time: string
+        },
+        confirmations: number,
+        status: number,
+        transfer_events? : {
+            list: [
+                {
+                    contract: string,
+                    count: number,
+                    decimal: number,
+                    from: string,
+                    symbol: string,
+                    to: string
+                }
+            ],
+            truncated: boolean
+        }
+    };
 */
-  let API = await ledgerProvider.getAPI('ETH');
-
-  let amount = 0.1;
-
-  if (API) {
-    //check if account balance > withdrawal amount
-    //update tx with account info
-    let withdrawAmount = BigNumber(amount).multipliedBy(Math.pow(10, 18));
-    withdrawAmount = withdrawAmount.toNumber();
-
-    let balance = await API.getAccountBalance('0xB108C555ceA52D544a7C00d13e94105Ca73AA5ce');
 
 
-    console.log(`${balance}`);
+    let ethbalance = await web3.eth.getBalance('0xc892A4Dc36ffD6244d29f0cEC1dD222eB92CFB71');
 
-    let transactions = await API.getTransactions('0xB108C555ceA52D544a7C00d13e94105Ca73AA5ce');
-    console.log(transactions);
-    /*let baseTX = await bridge.createTransaction(address, withdrawAmount, '0xB108C555ceA52D544a7C00d13e94105Ca73AA5ce', undefined , new BigNumber(5));
+    console.log(`ETHbalance : - ${ethbalance}`);
 
-    //get nounce
-    let nonce;
-    if (currency === 'ETH') {
-      nonce = await API.getAccountNonce(address);
-    }
+    console.log("Searching for transactions to/from account \"" + address + "\" within blocks "  + START_BLOCK + " and " + 9477232);
 
-    console.log(baseTX);
+    //getTransactionsFromBlock();
 
-    let signedTransaction = await bridge.signTransaction(transport, currency.ticker, "44'/60'/0'/0/0" , baseTX , nonce);
+    subscribeEthTransactions();
 
-    let transactionResponse = await API.broadcastTransaction(signedTransaction);
+    subscribeTokenTransfers('KNC' ,filter, START_BLOCK , printTransactions );
 
-    console.log(`Status : ${transactionResponse.status} txid : ${transactionResponse.txId}`);*/
+    subscribeTokenTransfers('MLN' ,filter, START_BLOCK , printTransactions);
 
-  }
+    subscribeTokenTransfers('BAT' ,filter, START_BLOCK , printTransactions);
 
+    subscribeTokenTransfers('GNO' ,filter, START_BLOCK , printTransactions);
 
+    /*
+        web3.eth.getPastLogs({
+            address: address.toLowerCase(),
+            fromBlock : START_BLOCK,
+            toBlock : END_BLOCK
+        })
+        .then(function (data) {
+            console.log(data);
+        });
+    */
 
-  /*
-  const api = new RippleAPI({
-    server: 'wss://s2.ripple.com' // Public rippled server hosted by Ripple, Inc.
-  });
-
-  api.connect().then(() => {
-    api.getTransactions( address, {start: '0BAE93BFEC325C424619204798762C1400E922BC97C4008DC3B2D37FC3406E5D'}).then(transaction => {
-      console.log(`TX : ${transaction}`);
+    //web3.eth.clearSubscriptions();
+/*
+*/
+// unsubscribes the subscription
+  /*  subscription.unsubscribe(function(error, success){
+        if(success)
+            console.log('Successfully unsubscribed!');
     });
-  });
+*/
 
-  */
+
+
+ /* contractInstance.getPastEvents("Transfer",
+      { filter,
+        fromBlock: START_BLOCK
+      })
+      .then(events => console.log(events))
+      .catch((err) => console.error(err));
+
+*/
+
+    console.log(`Ether balance for address ${address} - ${batBalance}`);
 }
+
+function printTransactions(tx)
+{
+    console.log(`Contract Tx : ${JSON.stringify(tx)}`); // same results as the optional callback above
+}
+
+process.stdin.resume();//so the program will not close instantly
+
+function subscribeEthTransactions() {
+    let subscription = web3.eth.subscribe('newBlockHeaders', function (error, result) {
+        if (!error) {
+            //console.log(result);
+        }
+    })
+        .on("data", function (blockData) {
+            if(blockData && blockData.number)
+            {
+                Observable.defer(() => {
+                    console.log(`Calling getBlock ${blockData.number}`);
+                    return blockData.number;
+                })
+                    .delay(10000)
+                    .takeWhile((blockNumber) => {
+                        //check if position updated
+                        web3.eth.getBlock(blockNumber, true).then(block => {
+                            if (block != null ) {
+                                if(block.transactions && block.transactions.length > 0) {
+                                    console.log(`Block ${block.number} txs ${block.transactions.length}`);
+                                    block.transactions.forEach(function (e) {
+                                        if (address == "*" || address == e.from || address == e.to) {
+                                            console.log("  tx hash          : " + e.hash + "\n"
+                                                + "   nonce           : " + e.nonce + "\n"
+                                                + "   blockHash       : " + e.blockHash + "\n"
+                                                + "   blockNumber     : " + e.blockNumber + "\n"
+                                                + "   transactionIndex: " + e.transactionIndex + "\n"
+                                                + "   from            : " + e.from + "\n"
+                                                + "   to              : " + e.to + "\n"
+                                                + "   value           : " + e.value + "\n"
+                                                + "   gasPrice        : " + e.gasPrice + "\n"
+                                                + "   gas             : " + e.gas + "\n"
+                                                + "   input           : " + e.input);
+                                        }
+                                    });
+                                }
+                                return false;
+                            }
+                            else
+                            {
+                                return true;
+                            }
+                        });
+                    }).subscribe(
+                    result => {
+                        console.log(`Fetching result ${result}`);
+                    }, error => {
+                    }, async () => {
+                        //completed
+                    }
+                );
+            }
+        })
+        .on("changed", function (log) {
+            console.log(log);
+        });
+}
+
+function subscribeTokenTransfers(ccy ,filter, START_BLOCK , callback){
+    contractUtils.subscirbeTokeEvents(ccy, filter, START_BLOCK , callback);
+}
+
+async function getTransactionsFromBlock() {
+    for (var i = START_BLOCK; i <= END_BLOCK; i++) {
+        var block = await web3.eth.getBlock(i, true);
+
+        if (block != null && block.transactions != null) {
+            console.log(`Block ${block.hash} txs ${block.transactions.length}`);
+            block.transactions.forEach( function(e) {
+                if (address == "*" || address == e.from || address == e.to) {
+                    console.log("  tx hash          : " + e.hash + "\n"
+                        + "   nonce           : " + e.nonce + "\n"
+                        + "   blockHash       : " + e.blockHash + "\n"
+                        + "   blockNumber     : " + e.blockNumber + "\n"
+                        + "   transactionIndex: " + e.transactionIndex + "\n"
+                        + "   from            : " + e.from + "\n"
+                        + "   to              : " + e.to + "\n"
+                        + "   value           : " + e.value + "\n"
+                        + "   gasPrice        : " + e.gasPrice + "\n"
+                        + "   gas             : " + e.gas + "\n"
+                        + "   input           : " + e.input);
+                }
+            })
+        }
+    }
+}
+
+
+function exitHandler(options, exitCode) {
+    if (options.cleanup) console.log('clean');
+    if (exitCode || exitCode === 0) console.log(exitCode);
+    if (options.exit) process.exit();
+}
+
+//do something when app is closing
+process.on('exit', exitHandler.bind(null,{cleanup:true}));
+
+//catches ctrl+c event
+process.on('SIGINT', exitHandler.bind(null, {exit:true}));
+
+// catches "kill pid" (for example: nodemon restart)
+process.on('SIGUSR1', exitHandler.bind(null, {exit:true}));
+process.on('SIGUSR2', exitHandler.bind(null, {exit:true}));
+
+//catches uncaught exceptions
+process.on('uncaughtException', exitHandler.bind(null, {exit:true}));
+
 main();

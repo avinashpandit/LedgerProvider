@@ -49,7 +49,6 @@
     "command-line-args": "^5.1.1",
     "create-hash": "^1.2.0",
     "dotenv": "^5.0.1",
-    "ethereumjs-tx": "^1.3.7",
     "http": "latest",
     "https": "latest",
     "lodash": "^4.17.5",
@@ -70,6 +69,8 @@
     "winston": "^3.0.0",
     "winston-transport": "^4.2.0",
     "ws": "latest",
+    "ethereumjs-tx": "^2.1.1",
+    "web3": "1.2.5",
     "stellar-sdk": "^3.0.1"
   },
   "author": {

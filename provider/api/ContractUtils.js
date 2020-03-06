@@ -12,7 +12,7 @@ const web3 = new Web3( new Web3.providers.WebsocketProvider(process.env.WSProvid
 
 const ERC20ABI = JSON.parse(fs.readFileSync(path.resolve(__dirname, './ERC20-abi.json'), 'utf8'));
 
-const USER_WALLET_ADDRESS = '0xc892A4Dc36ffD6244d29f0cEC1dD222eB92CFB71';
+//const USER_WALLET_ADDRESS = '0xc892A4Dc36ffD6244d29f0cEC1dD222eB92CFB71';
 
 class ContractUtils {
 
@@ -98,9 +98,9 @@ class ContractUtils {
     return  new BN(amountUNIT).dividedBy( new BN(10).pow(decimals));
   }
 
-  async getETHRawTransaction(amount, destAddress)
+  async getETHRawTransaction(fromAddress, amount, destAddress)
   {
-    var count = await this.web3.eth.getTransactionCount(USER_WALLET_ADDRESS);
+    var count = await this.web3.eth.getTransactionCount(fromAddress);
     console.log(`num transactions so far: ${count}`);
     var gasPriceGwei = 5.5;
     var gasLimit = 250000;
@@ -119,13 +119,13 @@ class ContractUtils {
     return rawTransaction;
   }
 
-  async getContractRawTransaction(ccyDetails , amount , destAddress)
+  async getContractRawTransaction(fromAddress, ccyDetails , amount , destAddress)
   {
     let srcTokenContract = new this.web3.eth.Contract(ERC20ABI, ccyDetails.address);
     let finalAmt = this.getBalanceToUNIT(amount , ccyDetails.decimals);
 
     // Determine the nonce
-    var count = await this.web3.eth.getTransactionCount(USER_WALLET_ADDRESS);
+    var count = await this.web3.eth.getTransactionCount(fromAddress);
     //count = count + 1;
     console.log(`num transactions so far: ${count}`);
     var gasPriceGwei = 5.5;
@@ -133,7 +133,7 @@ class ContractUtils {
     // Chain ID of Ropsten Test Net is 3, replace it to 1 for Main Net
     var chainId = 1;
     var rawTransaction = {
-      'from': USER_WALLET_ADDRESS,
+      'from': fromAddress,
       'nonce': '0x' + count.toString(16),
       'gasPrice': this.web3.utils.toHex(gasPriceGwei * 1e9),
       'gasLimit': this.web3.utils.toHex(gasLimit),
@@ -152,7 +152,7 @@ class ContractUtils {
   }
 
   //subscribe token events with filter
-  subscirbeTokeEvents(ccy,filter,START_BLOCK,callback)
+  subscribeTokenTransfers(ccy,filter,START_BLOCK,callback)
   {
     let contractDetails = this.getContractDetails(ccy);
     let contractInstance = this.getContractInstance(contractDetails);

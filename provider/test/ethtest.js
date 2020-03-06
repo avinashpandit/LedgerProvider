@@ -177,7 +177,7 @@ function subscribeEthTransactions() {
 }
 
 function subscribeTokenTransfers(ccy ,filter, START_BLOCK , callback){
-    contractUtils.subscirbeTokeEvents(ccy, filter, START_BLOCK , callback);
+    contractUtils.subscribeTokenTransfers(ccy, filter, START_BLOCK , callback);
 }
 
 async function getTransactionsFromBlock() {

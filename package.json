@@ -1,17 +1,18 @@
 {
   "name": "hw-ledger-provider",
-  "version": "1.1.40",
+  "version": "1.1.42",
   "description": "Combined one package for interacting with Ledger device and Ledger API - Using LedgerJS , Ledger commons , Ledger common live ",
   "homepage": "http://coinagg.com",
   "scripts": {
-    "prepack": "npm run prepack:babel && npm run prepack:flow",
+    "prepack": "npm run prepack:babel && npm run prepack:flow && npm run copyJSON",
     "prepack:babel": "babel provider/ -d lib",
     "prepack:flow": "flow-copy-source src lib",
     "ltcTest": "babel-node ./provider/test/ltctest.js",
     "ethTest": "babel-node ./provider/test/ethtest.js",
     "btcTest": "babel-node ./provider/test/btctest.js",
     "stellarTest": "babel-node ./provider/test/stellartest.js",
-    "scan": "babel-node ./provider/tool/cli.js"
+    "scan": "babel-node ./provider/tool/cli.js",
+    "copyJSON" : "cp -rf ./ERC20-abi.json ./lib/api/"
   },
   "keywords": [
     "Ledger",
@@ -23,8 +24,7 @@
   },
   "main": "./lib/LedgerProvider.js",
   "files": [
-    "lib",
-    "./lib/api/ERC20-abi.json"
+    "lib"
   ],
   "dependencies": {
     "@babel/polyfill": "7.0.0",

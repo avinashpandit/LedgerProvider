@@ -182,8 +182,13 @@ class ContractUtils {
           if(event.blockNumber && currentBlock){
             tx.confirmations = currentBlock - event.blockNumber;
           }
+
+          let block = await self.getWeb3().eth.getBlock(event.blockNumber);
+          if(block){
+            tx.received_at = block.timestamp * 1000;
+          }
           //console.log(`Contract Tx : ${JSON.stringify(tx)}`); // same results as the optional callback above
-          callback(tx);
+          await callback(tx);
         })
         .on('changed', function(event){
           // remove event from local database

@@ -5,6 +5,7 @@ import type { CryptoCurrency } from '@ledgerhq/live-common/lib/types'
 import network from "./network";
 import { blockchainBaseURL, getCurrencyExplorer } from "@ledgerhq/live-common/lib/api/Ledger";
 import { getEstimatedFees } from "@ledgerhq/live-common/lib/api/Fees";
+import {contractUtils} from "./ContractUtils";
 
 export type Block = { height: number }; // TODO more fields actually
 
@@ -178,6 +179,10 @@ export const apiForEther = (currency: CryptoCurrency): API => {
             else{
                 return maxFees;
             }
+        }
+
+        getContractUtils(){
+            return contractUtils;
         }
     };
 };

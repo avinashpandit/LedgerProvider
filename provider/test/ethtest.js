@@ -113,7 +113,7 @@ async function main() {
 
 function printTransactions(tx)
 {
-    console.log(`Contract Tx : ${JSON.stringify(tx)}`); // same results as the optional callback above
+    console.log(`Tx : ${JSON.stringify(tx)}`); // same results as the optional callback above
 }
 
 process.stdin.resume();//so the program will not close instantly

@@ -184,8 +184,13 @@ class ContractUtils {
           }
 
           let block = await self.getWeb3().eth.getBlock(event.blockNumber);
-          if(block){
+          if(block)
+          {
             tx.received_at = block.timestamp * 1000;
+          }
+          else
+          {
+            tx.received_at = new Date().getTime();
           }
           //console.log(`Contract Tx : ${JSON.stringify(tx)}`); // same results as the optional callback above
           await callback(tx);

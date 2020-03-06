@@ -179,7 +179,7 @@ export const apiForEther = (currency: CryptoCurrency): API => {
             else{
                 return maxFees;
             }
-        }
+        },
 
         getContractUtils(){
             return contractUtils;

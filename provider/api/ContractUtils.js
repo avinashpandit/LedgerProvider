@@ -26,7 +26,9 @@ class ContractUtils {
         {symbol : 'BAT' , address : '0x0D8775F648430679A709E98d2b0Cb6250d2887EF' , decimals : 18},
         {symbol : 'MLN' , address : '0xec67005c4e498ec7f55e092bd1d35cbc47c91892' , decimals : 18},
         {symbol : 'KNC' , address : '0xdd974d5c2e2928dea5f71b9825b8b646686bd200' , decimals : 18},
-        {symbol : 'GNO' , address : '0x6810e776880C02933D47DB1b9fc05908e5386b96' , decimals : 18}
+        {symbol : 'GNO' , address : '0x6810e776880C02933D47DB1b9fc05908e5386b96' , decimals : 18},
+        {symbol : 'USDT' , address : '0xdAC17F958D2ee523a2206206994597C13D831ec7' , decimals : 6},
+        {symbol : 'USDC' , address : '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48' , decimals : 6}
     ];
 
     //adding tokens

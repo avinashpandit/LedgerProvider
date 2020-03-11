@@ -221,8 +221,8 @@ class LedgerProvider extends Provider{
     else{
         let tokenCcy = findTokenByTicker(ccy);
         if(tokenCcy){
-            log.info(`Getting ETH API for currency ${tokenCcy}`);
-            return apiForEther(currency);
+            log.info(`Getting ETH API for currency ${JSON.stringify(tokenCcy)}`);
+            return apiForEther(currency.parentCurrency);
         }
     }
 

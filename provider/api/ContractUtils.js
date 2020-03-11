@@ -1,6 +1,7 @@
 const Tx = require('ethereumjs-tx').Transaction;
 
 const BN = require('bignumber.js');
+const path = require('path');
 const fs = require('fs');
 
 const Web3 = require('web3');

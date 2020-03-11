@@ -109,7 +109,7 @@ class ContractUtils {
     // Chain ID of Ropsten Test Net is 3, replace it to 1 for Main Net
     var chainId = 1;
     var rawTransaction = {
-      'from': USER_WALLET_ADDRESS,
+      'from': fromAddress,
       'nonce': '0x' + count.toString(16),
       'gasPrice': this.web3.utils.toHex(gasPriceGwei * 1e9),
       'gasLimit': this.web3.utils.toHex(gasLimit),

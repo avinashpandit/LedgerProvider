@@ -2,7 +2,7 @@
 import invariant from 'invariant'
 import Eth from '@ledgerhq/hw-app-eth'
 import type Transport from '@ledgerhq/hw-transport'
-import EthereumTx from 'ethereumjs-tx'
+const Tx = require('ethereumjs-tx').Transaction;
 
 // see https://github.com/ethereum/EIPs/blob/master/EIPS/eip-155.md
 function getNetworkId(currencyId: string): ?number {
@@ -37,7 +37,7 @@ export default async (
 
   const chainId = getNetworkId(currencyId)
   invariant(chainId, `chainId not found for currency=${currencyId}`)
-  const tx = new EthereumTx({
+  const tx = new Tx({
     nonce: t.nonce,
     gasPrice: t.gasPrice,
     gasLimit: t.gasLimit,

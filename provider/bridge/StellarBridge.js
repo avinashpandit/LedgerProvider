@@ -19,14 +19,14 @@ class StellarBridge extends Bridge {
     return true;
   }
 
-  async createTransaction(recipient: string, amount: number, source: string , tag: number) {
+  async createTransaction(recipient: string, amount: number, source: string , tag: string) {
 
     const account = await this.api.getAccount(source);
     const fee = await this.api.fetchFees();
     let memo;
     if(tag)
     {
-      memo = Memo.id(tag);
+      memo = Memo.text(tag);
     }
     else{
       memo = Memo.none();

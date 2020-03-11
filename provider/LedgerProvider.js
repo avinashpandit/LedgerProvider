@@ -23,6 +23,8 @@ import currencyBridge from './bridge/CurrencyBridge'
 import {closeAllDevices} from "./tool/live-common-setup";
 import {apiForStellar} from './api/Stellar';
 import stellarBridge from './bridge/StellarBridge';
+import ERC20EthereumBridge from "./bridge/ERC20EthereumBridge";
+import {findTokenByTicker} from "@ledgerhq/live-common/lib/data/tokens";
 
 const pino = require('pino');
 const log = pino({
@@ -227,7 +229,7 @@ class LedgerProvider extends Provider{
       log.info(`${currency.family}`);
       if(currency.family === 'ethereum')
       {
-        return ethereumBridge;
+          return ethereumBridge;
       }
       else if(currency.family === 'ripple')
       {
@@ -239,6 +241,14 @@ class LedgerProvider extends Provider{
       else if(currency.family === 'stellar')
       {
         return stellarBridge;
+      }
+    }
+    else{
+      let tokenCcy = findTokenByTicker(ccy);
+      if(tokenCcy){
+        log.info(`Geeting ERC20EthereumBridge for currency ${tokenCcy}`);
+        let tokenBridge = new ERC20EthereumBridge(ccy);
+        return tokenBridge;
       }
     }
   }

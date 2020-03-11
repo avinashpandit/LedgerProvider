@@ -85,7 +85,7 @@ class ERC20EthereumBridge extends Bridge {
     // Finally, we can send the transaction string to broadcast
     let signedTx = `0x${tx.serialize().toString('hex')}`;
 
-    console.log(`${signedTx}`);
+    console.log(`Signed TX for ccy ${ccy} - ${signedTx}`);
 
     //const receipt = await this.web3.eth.sendSignedTransaction('0x' + tx.serialize().toString('hex'));
     //console.log(`Receipt info:  ${JSON.stringify(receipt, null, '\t')}`);

@@ -1,11 +1,9 @@
 // @flow
 import { BigNumber } from 'bignumber.js';
 import Bridge from '../Bridge';
-import signTransactionForCurrency from '../helpers/signTransactionForCurrency'
 import {contractUtils} from "../api/ContractUtils";
 import {findTokenByTicker} from "@ledgerhq/live-common/lib/data/tokens";
 import Eth from '@ledgerhq/hw-app-eth';
-import EthereumTx from "ethereumjs-tx";
 const Tx = require('ethereumjs-tx').Transaction;
 import { byContractAddress } from "@ledgerhq/hw-app-eth/erc20"
 

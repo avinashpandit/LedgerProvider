@@ -218,6 +218,14 @@ class LedgerProvider extends Provider{
         return apiForStellar(currency);
       }
     }
+    else{
+        let tokenCcy = findTokenByTicker(ccy);
+        if(tokenCcy){
+            log.info(`Getting ETH API for currency ${tokenCcy}`);
+            return apiForEther(currency);
+        }
+    }
+
   }
 
   async getBridge(ccy : string)
@@ -246,7 +254,7 @@ class LedgerProvider extends Provider{
     else{
       let tokenCcy = findTokenByTicker(ccy);
       if(tokenCcy){
-        log.info(`Geeting ERC20EthereumBridge for currency ${tokenCcy}`);
+        log.info(`Getting ERC20EthereumBridge for currency ${tokenCcy}`);
         let tokenBridge = new ERC20EthereumBridge(ccy);
         return tokenBridge;
       }

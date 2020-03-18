@@ -25,6 +25,7 @@ import {apiForStellar} from './api/Stellar';
 import stellarBridge from './bridge/StellarBridge';
 import ERC20EthereumBridge from "./bridge/ERC20EthereumBridge";
 import {findTokenByTicker} from "@ledgerhq/live-common/lib/data/tokens";
+import ERC20EthereumAPI from "./api/ERC20EthereumAPI";
 
 const pino = require('pino');
 const log = pino({
@@ -222,7 +223,8 @@ class LedgerProvider extends Provider{
         let tokenCcy = findTokenByTicker(ccy);
         if(tokenCcy){
             log.info(`Getting ETH API for currency ${JSON.stringify(tokenCcy)}`);
-            return apiForEther(tokenCcy.parentCurrency);
+            let tokenAPI = new ERC20EthereumAPI(ccy);
+            return tokenAPI;
         }
     }
 

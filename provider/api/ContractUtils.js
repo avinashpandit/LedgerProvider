@@ -6,6 +6,7 @@ const fs = require('fs');
 
 const Web3 = require('web3');
 const web3 = new Web3( new Web3.providers.WebsocketProvider(process.env.WSProvider));
+import axios from 'axios';
 
 //WSProvider=wss://mainnet.infura.io/ws/v3/db2ee91f04bc44a281aae437e28d5b6b
 //const web3 = new Web3( new Web3.providers.WebsocketProvider('ws://192.168.1.68:8546'));
@@ -205,6 +206,28 @@ class ContractUtils {
 
     return true;
   }
+
+  async getGasPrice(minGasPrice = 2, maxGasPrice = 100 , avgGasPrice = 20)
+  {
+    try {
+      let response = await axios.get('https://ethgasstation.info/json/predictTable.json');
+      if (response && response.data) {
+        for (let gasPrice of response.data) {
+          if (gasPrice.gasprice >= minGasPrice && gasPrice.gasprice <= maxGasPrice) {
+            if (gasPrice.expectedTime && gasPrice.expectedTime < .4) {
+              return gasPrice.gasprice;
+            }
+          }
+        }
+        return avgGasPrice;
+      }
+    }
+    catch(error){
+      console.log('Unable to retrieve gasPrice from API, defaulting to maxGasPrice ${maxGasPrice}');
+      return avgGasPrice;
+    }
+  }
+
 
 }
 

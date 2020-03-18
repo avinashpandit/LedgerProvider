@@ -1,12 +1,10 @@
 import ledgerProvider from '../LedgerProvider';
 import BigNumber from "bignumber.js";
 import {findTokenByTicker} from "@ledgerhq/live-common/lib/data/tokens";
-import {findCryptoCurrencyByTicker} from "@ledgerhq/live-common/lib/data/cryptocurrencies";
-
 
 async function main() {
 
-    const address = '0xc892A4Dc36ffD6244d29f0cEC1dD222eB92CFB71';
+    const address = '0x7aefEB86cADbe43a972eE7C96113ff72BfCF080b';
     const fromAddress = '0xB108C555ceA52D544a7C00d13e94105Ca73AA5ce';
 
     const currency = findTokenByTicker('BAT');
@@ -17,9 +15,9 @@ async function main() {
 
     let bridge = await ledgerProvider.getBridge('BAT');
 
-    let API = await ledgerProvider.getAPI('ETH');
+    let API = await ledgerProvider.getAPI('BAT');
 
-    let amount = 1;
+    let amount = 50;
 
     if (API) {
         //check if account balance > withdrawal amount
@@ -30,7 +28,7 @@ async function main() {
         //let balance = await API.getAccountBalance('0xB108C555ceA52D544a7C00d13e94105Ca73AA5ce');
         //console.log(`${balance}`);
         let fees = await API.getEstimatedFees();
-        console.log(`Fees ${fees}`)
+        console.log(`Fees ${fees}`);
 
         let baseTX = await bridge.createTransaction(address, withdrawAmount, fromAddress, undefined , fees);
 

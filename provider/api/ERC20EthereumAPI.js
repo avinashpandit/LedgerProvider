@@ -1,4 +1,5 @@
 import {contractUtils} from "./ContractUtils";
+import {BigNumber} from "bignumber.js";
 
 class ERC20EthereumAPI {
 
@@ -29,7 +30,7 @@ class ERC20EthereumAPI {
 
   async getAccountBalance(address) {
     let balanceWei = await this.tokenContract.methods.balanceOf(address).call();
-    return balanceWei;
+    return new BigNumber(balanceWei);
   }
 
   async getEstimatedFees()

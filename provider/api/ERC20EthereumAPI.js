@@ -21,11 +21,10 @@ class ERC20EthereumAPI {
   }
 
   async broadcastTransaction(tx) {
-
     const receipt = await this.web3.eth.sendSignedTransaction(tx);
     console.log(`Receipt info:  ${JSON.stringify(receipt, null, '\t')}`);
 
-    return {status : 'OK' , txId: {status: receipt.status , txId : receipt.transactionHash}};
+    return {status : 'OK' , txId: receipt.transactionHash};
   }
 
   async getAccountBalance(address) {

@@ -207,26 +207,28 @@ class ContractUtils {
     return true;
   }
 
-  async getGasPrice(minGasPrice = 2, maxGasPrice = 100 , avgGasPrice = 20)
+  async getGasPrice(minGasPrice, maxGasPrice = 100 , avgGasPrice = 10)
   {
     try {
-      let response = await axios.get('https://ethgasstation.info/json/predictTable.json');
+      let response = await axios.get('https://ethgasstation.info/json/ethgasAPI.json', {timeout : 5000});
       if (response && response.data) {
-        for (let gasPrice of response.data) {
-          if (gasPrice.gasprice >= minGasPrice && gasPrice.gasprice <= maxGasPrice) {
-            if (gasPrice.expectedTime && gasPrice.expectedTime < .4) {
-              return gasPrice.gasprice;
-            }
-          }
+        let fastGasPrice = response.data.fast;
+        if(fastGasPrice)
+        {
+          let gasPrice = new BN(fastGasPrice).dividedBy(10).toNumber();
+          console.log(`Using Gas Price - ${gasPrice} Received Gas Price data - ${response.data.safeLow} ${response.data.average} ${response.data.fast} ${response.data.fastest}.`);
+          return  gasPrice;
         }
         return avgGasPrice;
       }
+      return avgGasPrice;
     }
     catch(error){
-      console.log('Unable to retrieve gasPrice from API, defaulting to maxGasPrice ${maxGasPrice}');
+      console.log(`Unable to retrieve gasPrice from API, defaulting to avgGasPrice ${avgGasPrice}`);
       return avgGasPrice;
     }
   }
+
 
 
 }

@@ -9,7 +9,7 @@ async function main() {
 
     const currency = findTokenByTicker('BAT');
 
-    let transport = await ledgerProvider.getBlockedTransport();
+    //let transport = await ledgerProvider.getBlockedTransport();
 
     let device = ledgerProvider.getLedgerDevice();
 

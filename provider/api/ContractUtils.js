@@ -10,9 +10,7 @@ import axios from 'axios';
 
 //WSProvider=wss://mainnet.infura.io/ws/v3/db2ee91f04bc44a281aae437e28d5b6b
 //const web3 = new Web3( new Web3.providers.WebsocketProvider('ws://192.168.1.68:8546'));
-
-const pathToAsset = path.join(process.env.ERC20AbiPath , '/ERC20-abi.json');
-const ERC20ABI = JSON.parse(fs.readFileSync(pathToAsset, 'utf8'));
+import {ERC20ABI} from './ERC20-abi';
 
 //const USER_WALLET_ADDRESS = '0xc892A4Dc36ffD6244d29f0cEC1dD222eB92CFB71';
 

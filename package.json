@@ -1,6 +1,6 @@
 {
   "name": "hw-ledger-provider",
-  "version": "1.1.57",
+  "version": "1.1.58",
   "description": "Combined one package for interacting with Ledger device and Ledger API - Using LedgerJS , Ledger commons , Ledger common live ",
   "homepage": "http://coinagg.com",
   "scripts": {
@@ -12,6 +12,7 @@
     "btcTest": "babel-node ./provider/test/btctest.js",
     "stellarTest": "babel-node ./provider/test/stellartest.js",
     "scan": "babel-node ./provider/tool/cli.js",
+    "xtzTest": "babel-node ./provider/test/xtztest.js",
     "copyJSON" : "cp -rf ./ERC20-abi.json ./lib/api/"
   },
   "keywords": [

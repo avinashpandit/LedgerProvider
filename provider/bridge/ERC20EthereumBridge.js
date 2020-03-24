@@ -41,8 +41,8 @@ class ERC20EthereumBridge extends Bridge {
 
     var rawTransaction = {
       'from': source,
-      'gasPrice': this.web3.utils.toHex(fees),
-      'gasLimit': this.web3.utils.toHex(gasLimit),
+      'gasPrice': `0x${fees.toString(16)}`,
+      'gasLimit': `0x${gasLimit.toString(16)}`,
       'to': this.ccyDetails.address.toLowerCase(),
       'value': '0x0',
       'data': this.tokenContract.methods.transfer(recipient, amount.toFixed()).encodeABI(),

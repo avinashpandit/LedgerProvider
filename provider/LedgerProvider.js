@@ -1,7 +1,7 @@
 // @flow
 
 import Provider from './Provider';
-import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
+import TransportNodeHid from '@ledgerhq/hw-transport-node-hid-singleton';
 import CommNodeHid from '@ledgerhq/hw-transport-node-hid';
 import {findCryptoCurrencyByTicker} from '@ledgerhq/live-common/lib/data/cryptocurrencies';
 import getAddress from '@ledgerhq/live-common/lib/hw/getAddress';
@@ -126,7 +126,7 @@ class LedgerProvider extends Provider{
 
       console.log('Opening Transport ....');
 
-      TransportNodeHid.create(undefined, true, 5000).then(transport => {
+      TransportNodeHid.create('blue', true, 5000).then(transport => {
         self.transport = transport;
         self.transport.setDebugMode(true);
         console.log('Transport Opened !!!');

@@ -3,6 +3,7 @@ import Bridge from '../Bridge';
 import signTransactionForCurrency from '../helpers/signTransactionForCurrency';
 import {findCryptoCurrencyByTicker} from '@ledgerhq/live-common/lib/data/cryptocurrencies';
 import {apiForRipple} from '../api/Ripple';
+import { BigNumber } from 'bignumber.js';
 
 class RippleBridge extends Bridge {
 
@@ -17,19 +18,19 @@ class RippleBridge extends Bridge {
     return this.api.isValidAddress(recipient);
   }
 
-  async createTransaction(recipient: string, amount: number, source: string , tag: number) {
+  async createTransaction(recipient: string, amount: BigNumber, source: string , tag: number) {
     const payment = {
       'source': {
         'address': source,
         'maxAmount': {
-          'value': amount.toString(),
+          'value': amount.toFixed(),
           'currency': 'XRP'
         }
       },
       'destination': {
         'address': recipient,
         'amount': {
-          'value': amount.toString(),
+          'value': amount.toFixed(),
           'currency': 'XRP'
         }
       }

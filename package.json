@@ -1,18 +1,20 @@
 {
   "name": "hw-ledger-provider",
-  "version": "1.1.61",
+  "version": "1.1.62",
   "description": "Combined one package for interacting with Ledger device and Ledger API - Using LedgerJS , Ledger commons , Ledger common live ",
   "homepage": "http://coinagg.com",
   "scripts": {
     "prepack": "npm run prepack:babel && npm run prepack:flow && npm run copyJSON",
     "prepack:babel": "babel provider/ -d lib",
     "prepack:flow": "flow-copy-source src lib",
-    "ltcTest": "babel-node ./provider/test/ltctest.js",
-    "ethTest": "babel-node ./provider/test/ethLedgerTest.js",
-    "btcTest": "babel-node ./provider/test/btctest.js",
-    "stellarTest": "babel-node ./provider/test/stellartest.js",
+    "ltcTest": "babel-node --inspect ./provider/test/ltctest.js",
+    "ethTest": "babel-node --inspect ./provider/test/ethLedgerTest.js",
+    "batTest": "babel-node --inspect ./provider/test/batLedgerTest.js",
+    "btcTest": "babel-node --inspect ./provider/test/btctest.js",
+    "stellarTest": "babel-node --inspect ./provider/test/stellartest.js",
+    "xrpTest": "babel-node --inspect ./provider/test/xrptest.js",
     "scan": "babel-node ./provider/tool/cli.js",
-    "xtzTest": "babel-node ./provider/test/xtztest.js",
+    "xtzTest": "babel-node --inspect ./provider/test/xtztest.js",
     "copyJSON" : "cp -rf ./ERC20-abi.json ./lib/api/"
   },
   "keywords": [

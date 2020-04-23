@@ -1,12 +1,12 @@
 //import { RippleAPI } from 'ripple-lib';
 import ledgerProvider from '../LedgerProvider';
 import {findCryptoCurrencyByTicker} from '@ledgerhq/live-common/lib/data/cryptocurrencies';
-import {apiForRipple} from '../api/Ripple';
-
+import {BigNumber} from 'bignumber.js';
 
 async function main() {
 
-  const address = 'rUXtVRaar8jWTubimFUhtuo73eRMHgdfgd';
+  const xlmAddress1 = 'GC55N52EX7UPQ72LR76QIJX6TXY7WJTSARXRJXLZ7FXKIWFCFOU5PTCL';
+  const xlmAddress2 = 'GBJVOJGTPARPQWCEXGPPMKHM3I2RLGX4RPZLPZYYSBDECET5Q4CE24ZA';
 
   const currency = findCryptoCurrencyByTicker('XLM');
 
@@ -18,7 +18,7 @@ async function main() {
 
   let API = await ledgerProvider.getAPI('XLM');
 
-  let baseTX = await bridge.createTransaction("GC55N52EX7UPQ72LR76QIJX6TXY7WJTSARXRJXLZ7FXKIWFCFOU5PTCL", .1, "GADRJZAZ6CVU4MMET2YN63VTNCSERGIWDQNSEF4XHGDJHFYLLOUZBZDR");
+  let baseTX = await bridge.createTransaction(xlmAddress1, new BigNumber(1000.1), xlmAddress2);
 
   console.log(baseTX);
 

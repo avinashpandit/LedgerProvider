@@ -5,6 +5,7 @@ import {findCryptoCurrencyByTicker} from '@ledgerhq/live-common/lib/data/cryptoc
 import {apiForStellar} from '../api/Stellar';
 var StellarSdk = require('stellar-sdk');
 import {Transaction,Networks, Memo} from 'stellar-sdk';
+import { BigNumber } from 'bignumber.js';
 
 class StellarBridge extends Bridge {
 
@@ -19,7 +20,7 @@ class StellarBridge extends Bridge {
     return true;
   }
 
-  async createTransaction(recipient: string, amount: number, source: string , tag: string) {
+  async createTransaction(recipient: string, amount: BigNumber, source: string , tag: string) {
 
     const account = await this.api.getAccount(source);
     const fee = await this.api.fetchFees();
@@ -45,7 +46,7 @@ class StellarBridge extends Bridge {
           // Specify 350.1234567 lumens. Lumens are divisible to seven digits past
           // the decimal. They are represented in JS Stellar SDK in string format
           // to avoid errors from the use of the JavaScript Number data structure.
-          amount: amount.toString(),
+          amount: amount.toFixed(),
         }))
         // Make this transaction valid for the next 30 seconds only
         .setTimeout(120)

@@ -35,7 +35,7 @@ class ERC20EthereumBridge extends Bridge {
     }
   }
 
-  async createTransaction(recipient: string, amount: number , source : string , tag: string, fees : BigNumber ) {
+  async createTransaction(recipient: string, amount: BigNumber , source : string , tag: string, fees : BigNumber ) {
     var gasLimit = 300000;
     var chainId = 1;
 

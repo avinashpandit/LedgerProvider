@@ -1,24 +1,24 @@
 import ledgerProvider from '../LedgerProvider';
 import {BigNumber} from "bignumber.js";
-import {findCryptoCurrencyByTicker} from '@ledgerhq/live-common/lib/data/cryptocurrencies';
+import {findTokenByTicker} from "@ledgerhq/live-common/lib/data/tokens";
 
 async function main() {
 
 
-    const address = '0x7aefEB86cADbe43a972eE7C96113ff72BfCF080b';
-    const fromAddress = '0xB108C555ceA52D544a7C00d13e94105Ca73AA5ce';
+    const address2 = '0x7aefEB86cADbe43a972eE7C96113ff72BfCF080b';
+    const address1 = '0xB108C555ceA52D544a7C00d13e94105Ca73AA5ce';
 
-    const currency = findCryptoCurrencyByTicker('ETH');
+    const currency = findTokenByTicker('BAT');
 
     let transport = await ledgerProvider.getBlockedTransport();
 
     let device = ledgerProvider.getLedgerDevice();
 
-    let bridge = await ledgerProvider.getBridge('ETH');
+    let bridge = await ledgerProvider.getBridge('BAT');
 
-    let API = await ledgerProvider.getAPI('ETH');
+    let API = await ledgerProvider.getAPI('BAT');
 
-    let amount = 0.01;
+    let amount = 50;
 
     if (API) {
         //check if account balance > withdrawal amount
@@ -33,12 +33,12 @@ async function main() {
         console.log(`Fees ${fees} ${typeof fees}`);
 
 
-        let baseTX = await bridge.createTransaction(address, withdrawAmount, fromAddress, undefined , new BigNumber(fees));
+        let baseTX = await bridge.createTransaction(address2, withdrawAmount, address1, undefined , new BigNumber(fees));
 
         //get nounce
         let nonce;
         if (currency && (currency.family === 'ethereum' || currency.parentCurrency.family === 'ethereum')) {
-          nonce = await API.getAccountNonce(fromAddress);
+          nonce = await API.getAccountNonce(address1);
         }
 
         console.log(baseTX);

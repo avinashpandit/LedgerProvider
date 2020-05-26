@@ -1,6 +1,6 @@
 {
   "name": "hw-ledger-provider",
-  "version": "1.1.63",
+  "version": "1.1.65",
   "description": "Combined one package for interacting with Ledger device and Ledger API - Using LedgerJS , Ledger commons , Ledger common live ",
   "homepage": "http://coinagg.com",
   "scripts": {
@@ -43,11 +43,8 @@
     "@ledgerhq/hw-app-xrp": "5.15.0",
     "@ledgerhq/hw-transport": "5.15.0",
     "@ledgerhq/hw-transport-http": "5.15.0",
-    "@ledgerhq/hw-transport-mocker": "^5.15.0",
     "@ledgerhq/hw-transport-node-ble": "5.15.0",
     "@ledgerhq/hw-transport-node-hid": "5.15.0",
-    "@ledgerhq/hw-transport-node-hid-singleton": "5.15.0",
-    "@ledgerhq/ledger-core": "6.3.0",
     "@ledgerhq/live-common": "12.20.0",
     "@ledgerhq/logs": "5.15.0",
     "@tippyjs/react": "^4.0.0-alpha.4",
@@ -77,7 +74,6 @@
     "speakeasy": "^2.0.0",
     "stellar-sdk": "^3.0.1",
     "typedarray-to-buffer": "^3.1.5",
-    "usb": "^1.6.0",
     "uuid": "^3.2.1",
     "web3": "1.2.5",
     "winston": "^3.0.0",

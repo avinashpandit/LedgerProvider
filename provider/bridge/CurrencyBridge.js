@@ -1,9 +1,8 @@
 // @flow
 import Bridge from "../Bridge";
-import {findCryptoCurrencyByTicker} from "@ledgerhq/live-common/lib/data/cryptocurrencies";
-import signTransactionForCurrency from "../helpers/signTransactionForCurrency";
 import {from} from "rxjs";
-import allCommands from "../tool/commands";
+import send from "ledger-live/lib/commands/send";
+import sync from "ledger-live/lib/commands/sync";
 
 class CurrencyBridge extends Bridge {
 
@@ -25,21 +24,12 @@ class CurrencyBridge extends Bridge {
     serializeTransaction(t, nonce: string) {
     }
 
-    async signTransaction(transport, ccy , dvPath, t , nonce) {
-        const currency = findCryptoCurrencyByTicker(ccy);
-        var serializedTx = this.serializeTransaction(t , nonce);
-
-        let result = await signTransactionForCurrency(currency.family)(transport, currency.family, dvPath, serializedTx);
-
-        return result;
-    }
-
     signAndBroadcastTransaction(options) {
-        return from(allCommands.send.job(options));
+        return from(send.job(options));
     }
 
     syncAccount(options) {
-        return from(allCommands.sync.job(options));
+        return from(sync.job(options));
     }
 
 }

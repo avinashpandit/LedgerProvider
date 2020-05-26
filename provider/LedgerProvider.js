@@ -20,7 +20,7 @@ import ethereumBridge from './bridge/EthereumBridge';
 import {apiForRipple} from './api/Ripple';
 import rippleBridge from './bridge/RippleBridge';
 import currencyBridge from './bridge/CurrencyBridge'
-import {closeAllDevices} from "./tool/live-common-setup";
+import { closeAllDevices } from "ledger-live/lib/live-common-setup";
 import {apiForStellar} from './api/Stellar';
 import stellarBridge from './bridge/StellarBridge';
 import ERC20EthereumBridge from "./bridge/ERC20EthereumBridge";

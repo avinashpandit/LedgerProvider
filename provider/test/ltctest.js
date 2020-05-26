@@ -5,20 +5,7 @@ import ledgerProvider from '../LedgerProvider';
 
 import {deserializeError} from "@ledgerhq/errors";
 
-import all from "../tool/commands";
-
-let allCommands = all;
-
 async function main() {
-
-  const address = 'M9ZhEYupBW6k2shRMzXruiPNvd339p5Qgi';
-
-  /*implementLibcore({
-    lib: () => require("@ledgerhq/ledger-core"), // eslint-disable-line global-require
-    dbPath: process.env.LIBCORE_DB_PATH || "./dbdata"
-  });
-*/
-  //const currency = findCryptoCurrencyByTicker('LTC');
 
   let transport = await ledgerProvider.getBlockedTransport();
 
@@ -26,14 +13,15 @@ async function main() {
 
   let bridge = await ledgerProvider.getBridge('LTC');
 
+  let pubKey = 'Ltub2YAM5iqnxy8bYmLbZvhhwE483h1Ja44wGv1RPKijkHCSLa2X6W9jtyVL6FQqwL3gehw4cjzYovdkajDtuAJccHGw5wBrWU3Lik3QooMnejr';
+  let recipientAddress = 'MLHTQetS99hP5FsiVoKGSn34WgGyR6gVn5';
   let options = {
     "currency": "LTC",
     "amount": "0.01",
     "recipient": [
-      "M9eGEFa1cK79SWA12G23nQJ46jSKZSvkb1"
+      recipientAddress
     ],
-    //"xpub" : ['Ltub2Z8LKgDDug19ABzEdm9cJQjZFfWtCUBEBumQqsdd24bXcCBETriw1SKat2FrGCN9PAcZTaFn6NCkQQTpbs4zfjWWqz3e8sLu1qDZfbSFoGo'],
-    "xpub" : ['Ltub2Z8LKgDDug196j5VBL1fiqPcH6GQXJft6FQfxwp4of5RdM54JhwWAGRQ1MJoChbSMYBG984ou5L9EZftZQRP11fWr5WKLiuzRbr5sv7nS6g'],
+    "xpub" : [pubKey],
     'scheme' : 'segwit',
     //'index' : 1,
     idx : 0,
@@ -48,7 +36,7 @@ async function main() {
 
     let syncAcctoptions = {
         "currency": "LTC",
-        "xpub" : ['Ltub2Z8LKgDDug196j5VBL1fiqPcH6GQXJft6FQfxwp4of5RdM54JhwWAGRQ1MJoChbSMYBG984ou5L9EZftZQRP11fWr5WKLiuzRbr5sv7nS6g'],
+        "xpub" : [pubKey],
         'scheme' : 'segwit',
         'format' : 'stats',
         //'index' : 1,
@@ -60,7 +48,7 @@ async function main() {
 
   await ledgerProvider.closeTransport();
 
-    bridge.syncAccount(syncAcctoptions).subscribe({
+    /*bridge.syncAccount(syncAcctoptions).subscribe({
         next: log => {
             if (log !== undefined) console.log(log);
         },
@@ -73,7 +61,7 @@ async function main() {
             ledgerProvider.openTransport(ledgerProvider);
         }
     });
-
+*/
     bridge.signAndBroadcastTransaction(options).subscribe({
       next: log => {
         if (log !== undefined) console.log(log);
@@ -88,4 +76,11 @@ async function main() {
       }
     });
 }
+
+process.on('uncaughtException', function (err) {
+  console.error((new Date).toUTCString() + ' uncaughtException:', err.message)
+  console.error(err.stack)
+  process.exit(1)
+})
+
 main();

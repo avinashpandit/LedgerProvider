@@ -87,6 +87,91 @@
                 "NODE_DEBUG_OPTION" : "--inspect"
              },
              "console": "integratedTerminal",
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch via NPM XTZTest",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "xtzTest"
+            ],
+            "port": 9229,
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "env": { 
+                "TZ" : "UTC",
+                "WSProvider" :"ws://192.168.1.68:8546",
+                "ERC20AbiPath" : "/Users/avinashpandit/integral/app/crypto/LedgerProvider/",
+                "NODE_DEBUG_OPTION" : "--inspect"
+             },
+             "console": "integratedTerminal",
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch via NPM BTCTest",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "btcTest"
+            ],
+            "port": 9229,
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "env": { 
+                "TZ" : "UTC",
+                "WSProvider" :"ws://192.168.1.68:8546",
+                "ERC20AbiPath" : "/Users/avinashpandit/integral/app/crypto/LedgerProvider/",
+                "NODE_DEBUG_OPTION" : "--inspect"
+             },
+             "console": "integratedTerminal",
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch via NPM LedgerTest",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "ledgerTest"
+            ],
+            "port": 9229,
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "env": { 
+                "TZ" : "UTC",
+                "WSProvider" :"ws://192.168.1.68:8546",
+                "ERC20AbiPath" : "/Users/avinashpandit/integral/app/crypto/LedgerProvider/",
+                "NODE_DEBUG_OPTION" : "--inspect"
+             },
+             "console": "integratedTerminal",
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch via NPM LTCTest",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "ltcTest"
+            ],
+            "port": 9229,
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "env": { 
+                "TZ" : "UTC",
+                "WSProvider" :"ws://192.168.1.68:8546",
+                "ERC20AbiPath" : "/Users/avinashpandit/integral/app/crypto/LedgerProvider/",
+                "NODE_DEBUG_OPTION" : "--inspect"
+             },
+             "console": "integratedTerminal",
         }
+
     ]
 }

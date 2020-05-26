@@ -1,24 +1,13 @@
 //import { RippleAPI } from 'ripple-lib';
-import "@babel/polyfill";
+//import "@babel/polyfill";
 
 import ledgerProvider from '../LedgerProvider';
 
 import {deserializeError} from "@ledgerhq/errors";
 
-import all from "../tool/commands";
-
-let allCommands = all;
-
 async function main() {
 
   const address = 'bc1qjt5cx3gsjhtfudlyghd22vxnywdmyga7mwtrcq';
-
-  /*implementLibcore({
-    lib: () => require("@ledgerhq/ledger-core"), // eslint-disable-line global-require
-    dbPath: process.env.LIBCORE_DB_PATH || "./dbdata"
-  });
-*/
-  //const currency = findCryptoCurrencyByTicker('LTC');
 
   let transport = await ledgerProvider.getBlockedTransport();
 
@@ -88,3 +77,9 @@ async function main() {
     });
 }
 main();
+
+process.on('uncaughtException', function (exception) {
+  console.log(exception); // to see your exception details in the console
+  // if you are on production, maybe you can send the exception details to your
+  // email as well ?
+});

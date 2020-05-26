@@ -1,32 +1,51 @@
 //import { RippleAPI } from 'ripple-lib';
-import ledgerProvider from '../LedgerProvider';
-import {findCryptoCurrencyByTicker} from '@ledgerhq/live-common/lib/data/cryptocurrencies';
-import {apiForBitcoin} from '../api/Bitcoin';
+//import "@babel/polyfill";
 
+import ledgerProvider from '../LedgerProvider';
+
+import {deserializeError} from "@ledgerhq/errors";
+
+import all from "../tool/commands";
+
+let allCommands = all;
 
 async function main() {
 
-  const address = 'tz1R3qmyWVzcyzuKMEMbfvHbz5ZvRisFCL5t';
+  
+  let transport = await ledgerProvider.getBlockedTransport();
 
-  const currency = findCryptoCurrencyByTicker('XTZ');
+  let device = ledgerProvider.getLedgerDevice();
 
-  let API = apiForBitcoin(currency);
+  let bridge = await ledgerProvider.getBridge('XTZ');
 
+  let options = {
+    "currency": "XTZ",
+    "amount": "0.1",
+    "recipient": [
+      "tz1dBxjgYU33vybzBmdhSfPvzdHRXv5VFR1Z"
+    ],
+    "xpub" : ['02028ae815081df0aa6f4b9edc9ca1b471f809834fe1a87edde661d4c0485bec05'],
+    'scheme' : 'native_segwit',
+    //'index' : 1,
+    idx : 0,
+    "length" : 1
+  };
 
-  let txs = await API.getTransactions(address);
+    
+  await ledgerProvider.closeTransport();
 
-  console.log(`${txs}`);
-  /*
-  const api = new RippleAPI({
-    server: 'wss://s2.ripple.com' // Public rippled server hosted by Ripple, Inc.
-  });
-
-  api.connect().then(() => {
-    api.getTransactions( address, {start: '0BAE93BFEC325C424619204798762C1400E922BC97C4008DC3B2D37FC3406E5D'}).then(transaction => {
-      console.log(`TX : ${transaction}`);
+    bridge.signAndBroadcastTransaction(options).subscribe({
+      next: log => {
+        if (log !== undefined) console.log(log);
+      },
+      error: error => {
+        const e = error instanceof Error ? error : deserializeError(error);
+        if (process.env.VERBOSE) console.error(e);
+        else console.error(String(e.message || e));
+      },
+      complete: () => {
+        ledgerProvider.openTransport(ledgerProvider);
+      }
     });
-  });
-
-  */
 }
 main();

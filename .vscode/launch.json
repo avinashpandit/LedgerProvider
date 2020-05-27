@@ -91,6 +91,27 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "Launch via NPM OMGTest",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "omgTest"
+            ],
+            "port": 9229,
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "env": { 
+                "TZ" : "UTC",
+                "WSProvider" :"ws://192.168.1.68:8546",
+                "ERC20AbiPath" : "/Users/avinashpandit/integral/app/crypto/LedgerProvider/",
+                "NODE_DEBUG_OPTION" : "--inspect"
+             },
+             "console": "integratedTerminal",
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Launch via NPM XTZTest",
             "runtimeExecutable": "npm",
             "runtimeArgs": [

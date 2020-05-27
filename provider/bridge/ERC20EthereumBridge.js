@@ -43,7 +43,7 @@ class ERC20EthereumBridge extends Bridge {
       'from': source,
       'gasPrice': `0x${fees.toString(16)}`,
       'gasLimit': `0x${gasLimit.toString(16)}`,
-      'to': this.ccyDetails.address.toLowerCase(),
+      'to': this.ccyDetails.contractAddress.toLowerCase(),
       'value': '0x0',
       'data': this.tokenContract.methods.transfer(recipient, amount.toFixed()).encodeABI(),
       chainId

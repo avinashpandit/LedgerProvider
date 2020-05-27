@@ -8,15 +8,15 @@ async function main() {
     const address2 = '0x7aefEB86cADbe43a972eE7C96113ff72BfCF080b';
     const address1 = '0xB108C555ceA52D544a7C00d13e94105Ca73AA5ce';
 
-    const currency = findTokenByTicker('BAT');
+    const currency = findTokenByTicker('OMG');
 
     let transport = await ledgerProvider.getBlockedTransport();
 
     let device = ledgerProvider.getLedgerDevice();
 
-    let bridge = await ledgerProvider.getBridge('BAT');
+    let bridge = await ledgerProvider.getBridge('OMG');
 
-    let API = await ledgerProvider.getAPI('BAT');
+    let API = await ledgerProvider.getAPI('OMG');
 
     let amount = 5;
 

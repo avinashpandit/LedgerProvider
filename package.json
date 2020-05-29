@@ -12,7 +12,7 @@
     "ethTest": "nodemon $NODE_DEBUG_OPTION ./provider/test/ethLedgerTest.js --exec babel-node",
     "batTest": "nodemon $NODE_DEBUG_OPTION ./provider/test/batLedgerTest.js --exec babel-node",
     "omgTest": "nodemon $NODE_DEBUG_OPTION ./provider/test/omgLedgerTest.js --exec babel-node",
-    "btcTest": "nodemon $NODE_DEBUG_OPTION ./provider/test/btctest.js --exec babel-node",
+    "btcTest": "VERBOSE=1 nodemon $NODE_DEBUG_OPTION ./provider/test/btctest.js --exec babel-node",
     "stellarTest": "nodemon $NODE_DEBUG_OPTION ./provider/test/stellartest.js --exec babel-node",
     "xrpTest": "nodemon $NODE_DEBUG_OPTION ./provider/test/xrptest.js --exec babel-node",
     "scan": "nodemon $NODE_DEBUG_OPTION ./provider/tool/cli.js --exec babel-node",

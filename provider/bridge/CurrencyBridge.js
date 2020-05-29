@@ -1,8 +1,10 @@
 // @flow
 import Bridge from "../Bridge";
 import {from} from "rxjs";
-import send from "ledger-live/lib/commands/send";
-import sync from "ledger-live/lib/commands/sync";
+import send from "./send";
+import sync from "./sync";
+import {send as sendSync} from "ledger-live/lib/commands/send";
+//import sync from "ledger-live/lib/commands/sync";
 
 class CurrencyBridge extends Bridge {
 
@@ -25,6 +27,10 @@ class CurrencyBridge extends Bridge {
     }
 
     signAndBroadcastTransaction(options) {
+        if(options.doSync)
+        {
+            return from(sendSync.job(options));
+        }
         return from(send.job(options));
     }
 

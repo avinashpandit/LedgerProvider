@@ -27,7 +27,7 @@ class CurrencyBridge extends Bridge {
     }
 
     signAndBroadcastTransaction(options) {
-        if(options.doSync)
+        if(options.doSync || !options.account)
         {
             return from(sendSync.job(options));
         }

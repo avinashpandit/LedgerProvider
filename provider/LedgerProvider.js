@@ -125,20 +125,25 @@ class LedgerProvider extends Provider{
     try {
 
       console.log('Opening Transport ....');
+      let disableTransport = process.env.DISABLE_HID_TRANSPORT;
+      if(!disableTransport){
+        TransportNodeHid.create(undefined, true, 5000).then(transport => {
+          self.transport = transport;
+          self.transport.setDebugMode(true);
+          console.log('Transport Opened !!!');
+        });
+        /*
+            open(device.device.path).then(transport => {
+              self.device = device.device;
+              self.transport = transport;
+              self.transport.setDebugMode(true);
+            });
 
-      TransportNodeHid.create(undefined, true, 5000).then(transport => {
-        self.transport = transport;
-        self.transport.setDebugMode(true);
-        console.log('Transport Opened !!!');
-      });
-      /*
-          open(device.device.path).then(transport => {
-            self.device = device.device;
-            self.transport = transport;
-            self.transport.setDebugMode(true);
-          });
-
-       */
+        */
+      }
+      else{
+        console.log('Open Transport is disabled for this instance. Check DISABLE_HID_TRANSPORT env variable.');
+      }
     } catch (e) {
       self.transport = undefined;
     }

@@ -3,7 +3,7 @@ import Bridge from "../Bridge";
 import {from} from "rxjs";
 import send from "./send";
 import sync from "./sync";
-import {send as sendSync} from "ledger-live/lib/commands/send";
+import sendSync from "ledger-live/lib/commands/send";
 //import sync from "ledger-live/lib/commands/sync";
 
 class CurrencyBridge extends Bridge {

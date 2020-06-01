@@ -7,7 +7,7 @@ exports.default = void 0;
 
 var _operators = require("rxjs/operators");
 
-var _account = require("ledger-live/node_modules/@ledgerhq/live-common/lib/account");
+var _account = require("@ledgerhq/live-common/lib/account");
 
 var _scan = require("ledger-live/lib/scan");
 

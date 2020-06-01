@@ -19,12 +19,14 @@ async function main() {
     "currency": "BTC",
     "amount": "0.0001",
     "recipient": [
-      "3DRwtmJDSxaiGgyGNZSBtnTU4gywcz5is3"
+      //"3DRwtmJDSxaiGgyGNZSBtnTU4gywcz5is3",
+      "14bXwFWdXb5ZLfvbdRdXBdksUBYtMvCnyd"
     ],
-    "xpub" : ['xpub6CXBDtdJci8j17SZqaTeJbM246G61gBaLH3TRPvjdXi9CudBMjxMy1aRtPu5UnSq3bR2DKFtrjqK2nWVjQRmPpB56Rs8AuJy3Wktf6jp9YM'],
-    'scheme' : 'native_segwit',
+    device : device.path,
+    'scheme' : 'segwit',
+    //paginateOperations : 1,
     //'index' : 1,
-    idx : 0,
+    index : 2,
     "length" : 1
   };
 
@@ -36,11 +38,12 @@ async function main() {
 
     let syncAcctoptions = {
         "currency": "BTC",
-        "xpub" : ['xpub6CXBDtdJci8j17SZqaTeJbM246G61gBaLH3TRPvjdXi9CudBMjxMy1aRtPu5UnSq3bR2DKFtrjqK2nWVjQRmPpB56Rs8AuJy3Wktf6jp9YM'],
-        'scheme' : 'native_segwit',
-        'format' : 'stats',
+        device : device.path,
+        'scheme' : 'segwit',
+        //paginateOperations : 1,
         //'index' : 1,
-        idx : 0,
+        format : 'json',
+        index : 2,
         "length" : 1
     };
 
@@ -48,33 +51,51 @@ async function main() {
 
   await ledgerProvider.closeTransport();
 
-   /* bridge.syncAccount(syncAcctoptions).subscribe({
+  /*bridge.signAndBroadcastTransaction(options).subscribe({
+    next: log => {
+      if (log !== undefined) console.log(log);
+    },
+    error: error => {
+      const e = error instanceof Error ? error : deserializeError(error);
+      if (process.env.VERBOSE) console.error(e);
+      else console.error(String(e.message || e));
+    },
+    complete: () => {
+      ledgerProvider.openTransport(ledgerProvider);
+    }
+  });*/
+
+   bridge.syncAccount(syncAcctoptions).subscribe({
         next: log => {
-            if (log !== undefined) console.log(log);
+            if (log !== undefined) {
+              options.account = log;
+              bridge.signAndBroadcastTransaction(options).subscribe({
+                next: log => {
+                  if (log !== undefined) console.log(log);
+                },
+                error: error => {
+                  const e = error instanceof Error ? error : deserializeError(error);
+                  if (process.env.VERBOSE) console.error(e);
+                  else console.error(String(e.message || e));
+                },
+                complete: () => {
+                  ledgerProvider.openTransport(ledgerProvider);
+                }
+              }); 
+            }
         },
         error: error => {
             const e = error instanceof Error ? error : deserializeError(error);
             if (process.env.VERBOSE) console.error(e);
             else console.error(String(e.message || e));
         },
-        complete: () => {
-            ledgerProvider.openTransport(ledgerProvider);
+        complete: (st) => {
+            //ledgerProvider.openTransport(ledgerProvider);
         }
     });
-*/
-    bridge.signAndBroadcastTransaction(options).subscribe({
-      next: log => {
-        if (log !== undefined) console.log(log);
-      },
-      error: error => {
-        const e = error instanceof Error ? error : deserializeError(error);
-        if (process.env.VERBOSE) console.error(e);
-        else console.error(String(e.message || e));
-      },
-      complete: () => {
-        ledgerProvider.openTransport(ledgerProvider);
-      }
-    });
+
+    await ledgerProvider.closeTransport();
+
 }
 main();
 

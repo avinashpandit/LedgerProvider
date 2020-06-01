@@ -13,18 +13,23 @@ async function main() {
 
   let bridge = await ledgerProvider.getBridge('LTC');
 
-  let pubKey = 'Ltub2YAM5iqnxy8bYmLbZvhhwE483h1Ja44wGv1RPKijkHCSLa2X6W9jtyVL6FQqwL3gehw4cjzYovdkajDtuAJccHGw5wBrWU3Lik3QooMnejr';
-  let recipientAddress = 'MLHTQetS99hP5FsiVoKGSn34WgGyR6gVn5';
+  //let pubKey = 'Ltub2Z8LKgDDug19ABzEdm9cJQjZFfWtCUBEBumQqsdd24bXcCBETriw1SKat2FrGCN9PAcZTaFn6NCkQQTpbs4zfjWWqz3e8sLu1qDZfbSFoGo';
+  //let recipientAddress = 'MD7Wh6KJDZfNeCsD7be59ahKdLpN1Nrk5Y';
+  //let pubKey = 'Ltub2Z8LKgDDug196j5VBL1fiqPcH6GQXJft6FQfxwp4of5RdM54JhwWAGRQ1MJoChbSMYBG984ou5L9EZftZQRP11fWr5WKLiuzRbr5sv7nS6g';
+  let recipientAddress = 'M8kSYqJdjotrx3evScoHxwfGxa261fy2WV';
+  let index = 1;
+
   let options = {
     "currency": "LTC",
     "amount": "0.01",
     "recipient": [
       recipientAddress
     ],
-    "xpub" : [pubKey],
+    //"xpub" : [pubKey],
+    "device" : device.path,
     'scheme' : 'segwit',
-    //'index' : 1,
-    idx : 0,
+    'index' : index,
+    //idx : index,
     "length" : 1
   };
 
@@ -36,11 +41,12 @@ async function main() {
 
     let syncAcctoptions = {
         "currency": "LTC",
-        "xpub" : [pubKey],
+        //"xpub" : [pubKey],
+        'device' : device.path,
         'scheme' : 'segwit',
         'format' : 'stats',
-        //'index' : 1,
-        idx : 0,
+        'index' : index,
+        //idx : 0,
         "length" : 1
     };
 

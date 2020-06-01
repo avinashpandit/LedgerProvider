@@ -9,11 +9,11 @@ var _rxjs = require("rxjs");
 
 var _operators = require("rxjs/operators");
 
-var _env = require("ledger-live/node_modules/@ledgerhq/live-common/lib/env");
+var _env = require("@ledgerhq/live-common/lib/env");
 
-var _bridge = require("ledger-live/node_modules/@ledgerhq/live-common/lib/bridge");
+var _bridge = require("@ledgerhq/live-common/lib/bridge");
 
-var _transaction = require("ledger-live/node_modules/@ledgerhq/live-common/lib/transaction");
+var _transaction = require("@ledgerhq/live-common/lib/transaction");
 
 var _scan = require("ledger-live/lib/scan");
 

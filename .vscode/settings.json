@@ -1,0 +1,11 @@
+{
+    "sqltools.connections": [
+        {
+            "database": "${workspaceFolder:LedgerProvider}/dbdata/database_v3_ledgerlive",
+            "driver": "SQLite",
+            "name": "test1",
+            "previewLimit": 50
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}

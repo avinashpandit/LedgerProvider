@@ -13,24 +13,22 @@ async function main() {
 
   let bridge = await ledgerProvider.getBridge('LTC');
 
-  //let pubKey = 'Ltub2Z8LKgDDug19ABzEdm9cJQjZFfWtCUBEBumQqsdd24bXcCBETriw1SKat2FrGCN9PAcZTaFn6NCkQQTpbs4zfjWWqz3e8sLu1qDZfbSFoGo';
-  //let recipientAddress = 'MD7Wh6KJDZfNeCsD7be59ahKdLpN1Nrk5Y';
-  //let pubKey = 'Ltub2Z8LKgDDug196j5VBL1fiqPcH6GQXJft6FQfxwp4of5RdM54JhwWAGRQ1MJoChbSMYBG984ou5L9EZftZQRP11fWr5WKLiuzRbr5sv7nS6g';
-  let recipientAddress = 'M8kSYqJdjotrx3evScoHxwfGxa261fy2WV';
+  let recipientAddress = 'MD7Wh6KJDZfNeCsD7be59ahKdLpN1Nrk5Y';
+  //let recipientAddress = 'M8kSYqJdjotrx3evScoHxwfGxa261fy2WV';
   let index = 1;
 
   let options = {
     "currency": "LTC",
-    "amount": "0.01",
+    "amount": "0.19",
     "recipient": [
       recipientAddress
     ],
-    //"xpub" : [pubKey],
     "device" : device.path,
     'scheme' : 'segwit',
-    'index' : index,
-    //idx : index,
-    "length" : 1
+    'index' : 1,
+     //idx : index,
+    "length" : 1,
+    "disable-broadcast" : true
   };
 
     //'self-transaction': true,
@@ -38,49 +36,24 @@ async function main() {
     //"length" : 1
 //  };
 
-
-    let syncAcctoptions = {
-        "currency": "LTC",
-        //"xpub" : [pubKey],
-        'device' : device.path,
-        'scheme' : 'segwit',
-        'format' : 'stats',
-        'index' : index,
-        //idx : 0,
-        "length" : 1
-    };
-
   let addresses  = await ledgerProvider.getAddressForCurrencyList('LTC');
 
   await ledgerProvider.closeTransport();
+  bridge.signAndBroadcastTransaction(options).subscribe({
+    next: log => {
+      if (log !== undefined) console.log(log);
+    },
+    error: error => {
+      const e = error instanceof Error ? error : deserializeError(error);
+      if (process.env.VERBOSE) console.error(e);
+      else console.error(String(e.message || e));
+    },
+    complete: () => {
+      ledgerProvider.openTransport(ledgerProvider);
+    }
+  });
 
-    /*bridge.syncAccount(syncAcctoptions).subscribe({
-        next: log => {
-            if (log !== undefined) console.log(log);
-        },
-        error: error => {
-            const e = error instanceof Error ? error : deserializeError(error);
-            if (process.env.VERBOSE) console.error(e);
-            else console.error(String(e.message || e));
-        },
-        complete: () => {
-            ledgerProvider.openTransport(ledgerProvider);
-        }
-    });
-*/
-    bridge.signAndBroadcastTransaction(options).subscribe({
-      next: log => {
-        if (log !== undefined) console.log(log);
-      },
-      error: error => {
-        const e = error instanceof Error ? error : deserializeError(error);
-        if (process.env.VERBOSE) console.error(e);
-        else console.error(String(e.message || e));
-      },
-      complete: () => {
-        ledgerProvider.openTransport(ledgerProvider);
-      }
-    });
+    
 }
 
 process.on('uncaughtException', function (err) {

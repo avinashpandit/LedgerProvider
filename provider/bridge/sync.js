@@ -9,7 +9,7 @@ var _operators = require("rxjs/operators");
 
 var _account = require("@ledgerhq/live-common/lib/account");
 
-var _scan = require("ledger-live/lib/scan");
+var _scan = require("./scan");
 
 var _default = {
   description: "Synchronize accounts with blockchain",
@@ -20,6 +20,6 @@ var _default = {
     //typeDesc: Object.keys(_account.accountFormatters).join(" | "),
     desc: "how to display the data"
   }],
-  job: opts => (0, _scan.scan)(opts).pipe((0, _operators.map)(account => account))
+  job: opts => (0, _scan.scan)(opts)
 };
 exports.default = _default;

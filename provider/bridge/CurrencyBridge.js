@@ -4,6 +4,10 @@ import {from} from "rxjs";
 import send from "./send";
 import sync from "./sync";
 import sendSync from "ledger-live/lib/commands/send";
+import getAddress from "ledger-live/lib/commands/getAddress";
+import {getSeedIdentifierDerivation} from "@ledgerhq/live-common/lib/derivation";
+
+import { switchMap } from "rxjs/operators";
 //import sync from "ledger-live/lib/commands/sync";
 
 class CurrencyBridge extends Bridge {
@@ -31,6 +35,16 @@ class CurrencyBridge extends Bridge {
         {
             return from(sendSync.job(options));
         }
+        // get freshAddress
+        /*let account = options.account;
+        options.path = getSeedIdentifierDerivation(account.currency , account.derivationMode);
+        options.derivationMode = account.derivationMode;
+        return from(getAddress.job(options)).pipe(
+            switchMap((addressDetails) => {
+                account.seedIdentifier = addressDetails.publicKey;
+                return from(send.job(options));
+            }
+        ));*/
         return from(send.job(options));
     }
 

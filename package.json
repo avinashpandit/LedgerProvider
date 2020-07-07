@@ -1,6 +1,6 @@
 {
   "name": "hw-ledger-provider",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "Combined one package for interacting with Ledger device and Ledger API - Using LedgerJS , Ledger commons , Ledger common live ",
   "homepage": "http://coinagg.com",
   "scripts": {
@@ -47,6 +47,7 @@
     "@ledgerhq/hw-transport-http": "5.15.0",
     "@ledgerhq/hw-transport-node-ble": "5.15.0",
     "@ledgerhq/hw-transport-node-hid": "5.15.0",
+    "@ledgerhq/hw-transport-node-speculos": "5.15.0",
     "@ledgerhq/live-common": "12.20.0",
     "@ledgerhq/logs": "5.15.0",
     "@tippyjs/react": "^4.0.0-alpha.4",

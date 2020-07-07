@@ -28,7 +28,7 @@ var _deviceAccess = require("@ledgerhq/live-common/lib/hw/deviceAccess");
 
 var _promise = require("@ledgerhq/live-common/lib/promise");
 
-var _stream = require("../ledger-live/stream");
+var _stream = require("./stream");
 
 var _helpers = require("@ledgerhq/live-common/lib/account/helpers");
 
@@ -38,6 +38,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 const deviceOpt = {
   name: "device",
+  alias: "d",
   type: String,
   descOpt: "usb path",
   desc: "provide a specific HID path of a device"
@@ -88,10 +89,7 @@ const scanCommonOpts = [deviceOpt, {
 exports.scanCommonOpts = scanCommonOpts;
 
 const getCurrencyByKeyword = keyword => {
-  const r = (0, _currencies.findCryptoCurrency)(c => {
-    const search = keyword.replace(/ /, "").toLowerCase();
-    return c.id === search || c.name.replace(/ /, "").toLowerCase() === search || c.managerAppName && c.managerAppName.replace(/ /, "").toLowerCase() === search || c.ticker.toLowerCase() === search;
-  });
+  const r = (0, _currencies.findCryptoCurrencyByKeyword)(keyword);
 
   if (!r) {
     throw new Error("currency '" + keyword + "' not found");
@@ -195,11 +193,12 @@ function scan(arg) {
           derivationMode: (0, _derivation.asDerivationMode)(derivationMode),
           currency: cur,
           unit: cur.units[0],
-          index: index,
+          index: 0,
           freshAddress: xpub,
           // HACK for JS impl force mode that would only support address version
           freshAddressPath: "",
           freshAddresses: [],
+          creationDate: new Date(),
           lastSyncDate: new Date(0),
           blockHeight: 0,
           balance: new _bignumber.BigNumber(0),
@@ -218,5 +217,5 @@ function scan(arg) {
       scheme: scheme && (0, _derivation.asDerivationMode)(scheme),
       syncConfig
     }).pipe((0, _operators.filter)(e => e.type === "discovered"), (0, _operators.map)(e => e.account));
-  }), (0, _operators.skip)(0), (0, _operators.take)(length === undefined ? index !== undefined ? 1 : Infinity : length));
+  }), (0, _operators.skip)(index || 0), (0, _operators.take)(length === undefined ? index !== undefined ? 1 : Infinity : length));
 }

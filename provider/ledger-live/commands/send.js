@@ -15,11 +15,9 @@ var _bridge = require("@ledgerhq/live-common/lib/bridge");
 
 var _transaction = require("@ledgerhq/live-common/lib/transaction");
 
-var _scan = require("../ledger-live/scan");
+var _scan = require("../scan");
 
-var _transaction2 = require("../ledger-live/transaction");
-
-var _liveCommonSetup = require("../ledger-live/live-common-setup");
+var _transaction2 = require("../transaction");
 
 var _default = {
   description: "Send crypto-assets",
@@ -32,8 +30,7 @@ var _default = {
     type: Boolean,
     desc: "do not broadcast the transaction"
   }],
-  job: opts => (0, _rxjs.from)((0, _transaction2.inferTransactions)(opts.account, opts)).pipe((0, _operators.concatMap)(inferred => inferred.reduce((acc, t) => (0, _rxjs.concat)(acc, (0, _rxjs.from)((0, _rxjs.defer)(() => {
-    const account = opts.account;
+  job: opts => (0, _scan.scan)(opts).pipe((0, _operators.switchMap)(account => (0, _rxjs.from)((0, _transaction2.inferTransactions)(account, opts)).pipe((0, _operators.concatMap)(inferred => inferred.reduce((acc, t) => (0, _rxjs.concat)(acc, (0, _rxjs.from)((0, _rxjs.defer)(() => {
     const bridge = (0, _bridge.getAccountBridge)(account);
     return bridge.signOperation({
       account,
@@ -55,6 +52,6 @@ var _default = {
         transaction: t
       });
     })] : []));
-  }))), (0, _rxjs.empty)())), (0, _operators.map)(obj => JSON.stringify(obj)))
+  }))), (0, _rxjs.empty)())), (0, _operators.map)(obj => JSON.stringify(obj)))))
 };
 exports.default = _default;

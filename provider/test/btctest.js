@@ -38,11 +38,12 @@ async function main() {
 
     let syncAcctoptions = {
         "currency": "BTC",
-        device : device.path,
+        //device : device.path,
+        xpub : ['xpub6DPowdoGzTZ1XLTeteD5M7ULcooQ5ttihquU5MpvV2BRmXfmWCQYm9NFdrLuN4fnWdXd4fkbGz4oKvsUyzremKucB7PFs7dpRmqo4M2EbCD'],
         'scheme' : 'segwit',
         //paginateOperations : 1,
         //'index' : 1,
-        format : 'json',
+        format : 'stats',
         index : 2,
         "length" : 1
     };
@@ -69,7 +70,7 @@ async function main() {
         next: log => {
             if (log !== undefined) {
               options.account = log;
-              bridge.signAndBroadcastTransaction(options).subscribe({
+              /*bridge.signAndBroadcastTransaction(options).subscribe({
                 next: log => {
                   if (log !== undefined) console.log(log);
                 },
@@ -81,7 +82,7 @@ async function main() {
                 complete: () => {
                   ledgerProvider.openTransport(ledgerProvider);
                 }
-              }); 
+              }); */
             }
         },
         error: error => {

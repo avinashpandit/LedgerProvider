@@ -3,12 +3,11 @@ import Bridge from "../Bridge";
 import {from} from "rxjs";
 import send from "./send";
 import sync from "./sync";
-import sendSync from "ledger-live/lib/commands/send";
-import getAddress from "ledger-live/lib/commands/getAddress";
+import sendSync from "../ledger-live/commands/send";
+import getAddress from "../ledger-live/commands/getAddress";
 import {getSeedIdentifierDerivation} from "@ledgerhq/live-common/lib/derivation";
 
 import { switchMap } from "rxjs/operators";
-//import sync from "ledger-live/lib/commands/sync";
 
 class CurrencyBridge extends Bridge {
 

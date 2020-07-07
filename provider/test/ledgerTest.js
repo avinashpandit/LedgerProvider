@@ -1,9 +1,9 @@
 //import { RippleAPI } from 'ripple-lib';
 //import "@babel/polyfill";
 import {from} from "rxjs";
-import send from "ledger-live/lib/commands/send";
-import sync from "ledger-live/lib/commands/sync";
-import { closeAllDevices } from "ledger-live/lib/live-common-setup";
+import send from "../ledger-live/commands/send";
+import sync from "../ledger-live/commands/sync";
+import { closeAllDevices } from "../ledger-live/live-common-setup";
 import { deserializeError } from "@ledgerhq/errors";
 
 async function main() {

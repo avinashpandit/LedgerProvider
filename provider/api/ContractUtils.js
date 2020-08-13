@@ -212,7 +212,7 @@ class ContractUtils {
     return true;
   }
 
-  async getGasPrice(minGasPrice, maxGasPrice = 100 , avgGasPrice = 10)
+  async getGasPrice(minGasPrice, maxGasPrice = 500 , avgGasPrice = 10)
   {
     try {
       let response = await axios.get('https://ethgasstation.info/json/ethgasAPI.json', {timeout : 5000});
@@ -221,6 +221,10 @@ class ContractUtils {
         if(fastGasPrice)
         {
           let gasPrice = new BN(fastGasPrice).dividedBy(10).toNumber();
+          if(gasPrice > maxGasPrice)
+          {
+            gasPrice = maxGasPrice;
+          }
           console.log(`Using Gas Price - ${gasPrice} Received Gas Price data - ${response.data.safeLow} ${response.data.average} ${response.data.fast} ${response.data.fastest}.`);
           return  gasPrice;
         }

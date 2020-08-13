@@ -158,8 +158,8 @@ export const apiForEther = (currency: CryptoCurrency): API => {
         async getEstimatedFees()
         {
             let fees = await getEstimatedFees(currency);
-            //100 gWei -- this is going to be max price if nothing comes from estimatedFees
-            let maxFees = BigNumber(100000000000);
+            //500 gWei -- this is going to be max price if nothing comes from estimatedFees
+            let maxFees = BigNumber(500000000000);
             //10 gWei -- this is going to be min price
             let minFees = BigNumber(10000000000);
             if(fees && fees.gas_price)

@@ -36,7 +36,8 @@ class StellarBridge extends Bridge {
 
     const transaction = new StellarSdk.TransactionBuilder(account, {
       memo,
-      fee
+      fee,
+      networkPassphrase: Networks.PUBLIC
     })
     // Add a payment operation to the transaction
         .addOperation(StellarSdk.Operation.payment({

@@ -1,8 +1,8 @@
 module.exports = {
   presets: [
-    [
-      '@babel/preset-env'
-    ],'@babel/flow'
+    '@babel/preset-env',
+    '@babel/preset-react',
+    '@babel/flow'
   ],
   plugins: [
     '@babel/plugin-transform-modules-commonjs',

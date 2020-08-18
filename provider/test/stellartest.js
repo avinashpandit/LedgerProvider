@@ -18,7 +18,7 @@ async function main() {
 
   let API = await ledgerProvider.getAPI('XLM');
 
-  let baseTX = await bridge.createTransaction(xlmAddress1, new BigNumber(1000.1), xlmAddress2);
+  let baseTX = await bridge.createTransaction(xlmAddress1, new BigNumber(101.1), xlmAddress2);
 
   console.log(baseTX);
 

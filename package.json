@@ -51,7 +51,7 @@
     "@ledgerhq/logs": "5.15.0",
     "@tippyjs/react": "^4.0.0-alpha.4",
     "@trust/keyto": "^1.0.1",
-    "axios": "0.19.2",
+    "axios": "0.21.1",
     "bignumber.js": "9.0.0",
     "command-line-args": "^5.1.1",
     "create-hash": "^1.2.0",

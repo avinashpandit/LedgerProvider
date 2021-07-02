@@ -70,7 +70,7 @@
     "redux": "^4.0.5",
     "ripple-binary-codec": "^0.2.6",
     "ripple-lib": "^1.7.1",
-    "stellar-sdk": "^5.0.3",
+    "stellar-sdk": "^8.2.3",
     "typedarray-to-buffer": "^3.1.5",
     "uuid": "^3.2.1",
     "web3": "1.2.5",

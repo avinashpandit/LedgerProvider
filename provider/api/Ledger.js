@@ -53,7 +53,6 @@ const ledgerExplorersV2 = {
     // ethereum_classic: "ethc", // libcore dropped support of this
     hcash: "hsr",
     komodo: "kmd",
-    litecoin: "ltc",
     peercoin: "ppc",
     pivx: "pivx",
     poswallet: "posw",

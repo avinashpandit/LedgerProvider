@@ -72,6 +72,7 @@ const ledgerExplorersV3 = {
     bitcoin: "btc",
     ethereum: "eth",
     ethereum_ropsten: "eth_ropsten",
+    litecoin: "ltc",
     ethereum_classic: "etc"
     // tezos: "xtz"
 };

@@ -15,7 +15,7 @@
     "omgTest": "nodemon $NODE_DEBUG_OPTION ./provider/test/omgLedgerTest.js --exec babel-node",
     "btcTest": "VERBOSE=1 nodemon $NODE_DEBUG_OPTION ./provider/test/btctest.js --exec babel-node",
     "bchTest": "VERBOSE=1 nodemon $NODE_DEBUG_OPTION ./provider/test/btctest.js --exec babel-node",
-    "ltcTXScannerTest": "VERBOSE=1 nodemon $NODE_DEBUG_OPTION ./provider/test/ltcTXScannerTest.js --exec babel-node",
+    "ltcTxScannerTest": "VERBOSE=1 nodemon $NODE_DEBUG_OPTION ./provider/test/ltcTxScannerTest.js --exec babel-node",
     "stellarTest": "nodemon $NODE_DEBUG_OPTION ./provider/test/stellartest.js --exec babel-node",
     "xrpTest": "nodemon $NODE_DEBUG_OPTION ./provider/test/xrptest.js --exec babel-node",
     "scan": "nodemon $NODE_DEBUG_OPTION ./provider/tool/cli.js --exec babel-node",

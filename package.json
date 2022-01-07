@@ -1,6 +1,6 @@
 {
   "name": "hw-ledger-provider",
-  "version": "1.4.0",
+  "version": "1.4.3",
   "description": "Combined one package for interacting with Ledger device and Ledger API - Using LedgerJS , Ledger commons , Ledger common live ",
   "homepage": "http://coinagg.com",
   "scripts": {
@@ -14,6 +14,8 @@
     "batTest": "nodemon $NODE_DEBUG_OPTION ./provider/test/batLedgerTest.js --exec babel-node",
     "omgTest": "nodemon $NODE_DEBUG_OPTION ./provider/test/omgLedgerTest.js --exec babel-node",
     "btcTest": "VERBOSE=1 nodemon $NODE_DEBUG_OPTION ./provider/test/btctest.js --exec babel-node",
+    "bchTest": "VERBOSE=1 nodemon $NODE_DEBUG_OPTION ./provider/test/btctest.js --exec babel-node",
+    "ltcTXScannerTest": "VERBOSE=1 nodemon $NODE_DEBUG_OPTION ./provider/test/ltcTXScannerTest.js --exec babel-node",
     "stellarTest": "nodemon $NODE_DEBUG_OPTION ./provider/test/stellartest.js --exec babel-node",
     "xrpTest": "nodemon $NODE_DEBUG_OPTION ./provider/test/xrptest.js --exec babel-node",
     "scan": "nodemon $NODE_DEBUG_OPTION ./provider/tool/cli.js --exec babel-node",

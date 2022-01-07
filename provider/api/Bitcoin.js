@@ -48,7 +48,7 @@ export const apiForBitcoin = (currency: CryptoCurrency): API => {
       const { data } = await network({
         method: 'GET',
         url: `${baseURL}/addresses/${address}/transactions`,
-        params: { blockHash, noToken: 1 },
+        params: { block_hash : blockHash, noToken: 1 },
       });
 
       //logic to translate bitcoin specific transaction model to generic tx model containing to , from , value

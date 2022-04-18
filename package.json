@@ -1,6 +1,6 @@
 {
   "name": "hw-ledger-provider",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "Combined one package for interacting with Ledger device and Ledger API - Using LedgerJS , Ledger commons , Ledger common live ",
   "homepage": "http://coinagg.com",
   "scripts": {
@@ -11,6 +11,7 @@
     "ltcsyncAndSendTest": "VERBOSE=1 nodemon $NODE_DEBUG_OPTION ./provider/test/ltctestsyncandsend.js --exec babel-node",
     "ledgerTest": "nodemon $NODE_DEBUG_OPTION ./provider/test/ledgerTest.js --exec babel-node",
     "ethTest": "nodemon $NODE_DEBUG_OPTION ./provider/test/ethLedgerTest.js --exec babel-node",
+    "ethProviderTest": "WSProvider='ws://192.168.1.68:8546' nodemon $NODE_DEBUG_OPTION  ./provider/test/ethLedgerProviderTest.js --exec babel-node",
     "batTest": "nodemon $NODE_DEBUG_OPTION ./provider/test/batLedgerTest.js --exec babel-node",
     "omgTest": "nodemon $NODE_DEBUG_OPTION ./provider/test/omgLedgerTest.js --exec babel-node",
     "btcTest": "VERBOSE=1 nodemon $NODE_DEBUG_OPTION ./provider/test/btctest.js --exec babel-node",
@@ -113,7 +114,8 @@
     "@babel/preset-env": "^7.10.4",
     "@babel/preset-flow": "^7.10.4",
     "@babel/preset-react": "^7.10.4",
-    "flow-copy-source": "^2.0.9"
+    "flow-copy-source": "^2.0.9",
+    "nodemon": "^2.0.15"
   },
   "resolutions": {
     "**/sodium-native": "3.2.1"

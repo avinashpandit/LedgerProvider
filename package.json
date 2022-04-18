@@ -1,6 +1,6 @@
 {
   "name": "hw-ledger-provider",
-  "version": "1.4.7",
+  "version": "1.4.9",
   "description": "Combined one package for interacting with Ledger device and Ledger API - Using LedgerJS , Ledger commons , Ledger common live ",
   "homepage": "http://coinagg.com",
   "scripts": {
@@ -107,6 +107,7 @@
   "devDependencies": {
     "@babel/core": "^7.10.4",
     "@babel/node": "7.10.4",
+    "@babel/cli": "7.10.4",
     "@babel/plugin-proposal-class-properties": "^7.10.4",
     "@babel/plugin-transform-modules-commonjs": "^7.10.4",
     "@babel/preset-env": "^7.10.4",

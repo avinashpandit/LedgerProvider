@@ -112,21 +112,29 @@ export const apiForEther = (currency: CryptoCurrency): API => {
         },
 
         async getCurrentBlock() {
-            const { data } = await network({
-                method: "GET",
-                url: `${baseURL}/blocks/current`
-            });
-            return data;
+            return await contractUtils.web3.getCurrentBlock();
         },
-
+        
         async getAccountNonce(address) {
-            const { data } = await network({
-                method: "GET",
-                url: `${baseURL}/addresses/${address}/nonce`
-            });
-            return data[0].nonce;
+            let count = await contractUtils.web3.eth.getTransactionCount(address);
+            //count = count + 1;
+            console.log(`num transactions so far: ${count}`);
+            return '0x' + count.toString(16);
         },
-
+    
+        async broadcastTransaction(tx) {
+            return new Promise((resolve, reject) => {
+                contractUtils.eth.sendSignedTransaction(tx)
+                    .once('transactionHash', hash => {
+                    console.log(`transactionHash :  ${hash}`);
+                    resolve({status : 'OK' , txId: hash});
+                    })
+                    .on('error', error => {
+                    reject(error);
+                    })
+            });
+        },
+        
         async estimateGasLimitForERC20(address) {
             if (getCurrencyExplorer(currency).version === "v2") return 21000;
 
@@ -135,15 +143,6 @@ export const apiForEther = (currency: CryptoCurrency): API => {
                 url: `${baseURL}/addresses/${address}/estimate-gas-limit`
             });
             return data.estimated_gas_limit;
-        },
-
-        async broadcastTransaction(tx) {
-            const { data } = await network({
-                method: "POST",
-                url: `${baseURL}/transactions/send`,
-                data: { tx }
-            });
-            return {status : 'OK' , txId: data.result};
         },
 
         async getAccountBalance(address) {

@@ -5,8 +5,20 @@ const path = require('path');
 const fs = require('fs');
 
 const Web3 = require('web3');
-const web3 = new Web3( new Web3.providers.WebsocketProvider(process.env.WSProvider));
 import axios from 'axios';
+
+let options = {
+  timeout: 30000, // ms
+  // Enable auto reconnection
+  reconnect: {
+      auto: true,
+      delay: 5000, // ms
+      maxAttempts: 5,
+      onTimeout: false
+  }
+};
+
+const web3 = new Web3( new Web3.providers.WebsocketProvider(process.env.WSProvider , options));
 
 //WSProvider=wss://mainnet.infura.io/ws/v3/db2ee91f04bc44a281aae437e28d5b6b
 //const web3 = new Web3( new Web3.providers.WebsocketProvider('ws://192.168.1.68:8546'));

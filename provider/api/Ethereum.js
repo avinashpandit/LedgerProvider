@@ -6,6 +6,19 @@ import network from "./network";
 import { blockchainBaseURL, getCurrencyExplorer } from "@ledgerhq/live-common/lib/api/Ledger";
 import { getEstimatedFees } from "@ledgerhq/live-common/lib/api/Fees";
 import {contractUtils} from "./ContractUtils";
+const Web3 = require('web3');
+
+let options = {
+    timeout: 30000, // ms
+    // Enable auto reconnection
+    reconnect: {
+        auto: true,
+        delay: 5000, // ms
+        maxAttempts: 5,
+        onTimeout: false
+    }
+};
+const web3 = new Web3( new Web3.providers.WebsocketProvider(process.env.WSProvider , options));
 
 export type Block = { height: number }; // TODO more fields actually
 
@@ -112,11 +125,15 @@ export const apiForEther = (currency: CryptoCurrency): API => {
         },
 
         async getCurrentBlock() {
-            return await contractUtils.web3.getCurrentBlock();
+            const { data } = await network({
+                method: "GET",
+                url: `${baseURL}/blocks/current`
+            });
+            return data;
         },
         
         async getAccountNonce(address) {
-            let count = await contractUtils.web3.eth.getTransactionCount(address);
+            let count = await web3.eth.getTransactionCount(address);
             //count = count + 1;
             console.log(`num transactions so far: ${count}`);
             return '0x' + count.toString(16);
@@ -124,7 +141,7 @@ export const apiForEther = (currency: CryptoCurrency): API => {
     
         async broadcastTransaction(tx) {
             return new Promise((resolve, reject) => {
-                contractUtils.eth.sendSignedTransaction(tx)
+                web3.eth.sendSignedTransaction(tx)
                     .once('transactionHash', hash => {
                     console.log(`transactionHash :  ${hash}`);
                     resolve({status : 'OK' , txId: hash});

@@ -1,6 +1,6 @@
 {
   "name": "hw-ledger-provider",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "Combined one package for interacting with Ledger device and Ledger API - Using LedgerJS , Ledger commons , Ledger common live ",
   "homepage": "http://coinagg.com",
   "scripts": {
@@ -72,8 +72,8 @@
     "react-redux": "7.2.0",
     "redux": "^4.0.5",
     "ripple-binary-codec": "^0.2.6",
-    "ripple-lib": "^1.7.1",
-    "stellar-sdk": "^10.0.1",
+    "ripple-lib": "^1.10.1",
+    "stellar-sdk": "^10.2.0",
     "typedarray-to-buffer": "^3.1.5",
     "uuid": "^3.2.1",
     "web3": "1.2.9",
@@ -116,8 +116,5 @@
     "@babel/preset-react": "^7.10.4",
     "flow-copy-source": "^2.0.9",
     "nodemon": "^2.0.15"
-  },
-  "resolutions": {
-    "**/sodium-native": "3.2.1"
   }
 }

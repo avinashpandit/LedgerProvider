@@ -11,7 +11,7 @@
     "ltcsyncAndSendTest": "VERBOSE=1 nodemon $NODE_DEBUG_OPTION ./provider/test/ltctestsyncandsend.js --exec babel-node",
     "ledgerTest": "nodemon $NODE_DEBUG_OPTION ./provider/test/ledgerTest.js --exec babel-node",
     "ethTest": "nodemon $NODE_DEBUG_OPTION ./provider/test/ethLedgerTest.js --exec babel-node",
-    "ethProviderTest": "WSProvider='ws://192.168.1.68:8546' nodemon $NODE_DEBUG_OPTION  ./provider/test/ethLedgerProviderTest.js --exec babel-node",
+    "ethProviderTest": "WSProvider='ws://192.168.1.68:7546' nodemon $NODE_DEBUG_OPTION  ./provider/test/ethLedgerProviderTest.js --exec babel-node",
     "batTest": "nodemon $NODE_DEBUG_OPTION ./provider/test/batLedgerTest.js --exec babel-node",
     "omgTest": "nodemon $NODE_DEBUG_OPTION ./provider/test/omgLedgerTest.js --exec babel-node",
     "btcTest": "VERBOSE=1 nodemon $NODE_DEBUG_OPTION ./provider/test/btctest.js --exec babel-node",

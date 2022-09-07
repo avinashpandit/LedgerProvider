@@ -29,6 +29,9 @@ async function main() {
 
 
     //console.log(`${balance}`);
+    let currentNonce = await API.getAccountNonce('0xc892a4dc36ffd6244d29f0cec1dd222eb92cfb71');
+
+    console.log(`Getting current nonce: ${currentNonce}`);
 
     let transactions = await API.getTransactions(address);
     //console.log(transactions);

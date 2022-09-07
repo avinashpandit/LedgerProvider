@@ -5,6 +5,7 @@
     "version": "0.2.0",
     "configurations": [
 
+
         {
             "type": "node",
             "request": "launch",
@@ -20,7 +21,7 @@
             ],
             "env": { 
                 "TZ" : "UTC",
-                "WSProvider" :"ws://192.168.1.68:8546",
+                "WSProvider" :"ws://192.168.1.68:7546",
                 "ERC20AbiPath" : "/Users/avinashpandit/integral/app/crypto/LedgerProvider/",
                 "NODE_DEBUG_OPTION" : "--inspect"
              },
@@ -41,7 +42,7 @@
             ],
             "env": { 
                 "TZ" : "UTC",
-                "WSProvider" :"ws://192.168.1.68:8546",
+                "WSProvider" :"ws://192.168.1.68:7546",
                 "ERC20AbiPath" : "/Users/avinashpandit/integral/app/crypto/LedgerProvider/",
                 "NODE_DEBUG_OPTION" : "--inspect"
              },
@@ -62,7 +63,28 @@
             ],
             "env": { 
                 "TZ" : "UTC",
-                "WSProvider" :"ws://192.168.1.68:8546",
+                "WSProvider" :"ws://192.168.1.68:7546",
+                "ERC20AbiPath" : "/Users/avinashpandit/integral/app/crypto/LedgerProvider/",
+                "NODE_DEBUG_OPTION" : "--inspect"
+             },
+             "console": "integratedTerminal",
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch via NPM ETHProviderTest",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "ethProviderTest"
+            ],
+            "port": 9229,
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "env": { 
+                "TZ" : "UTC",
+                "WSProvider" :"ws://192.168.1.68:7546",
                 "ERC20AbiPath" : "/Users/avinashpandit/integral/app/crypto/LedgerProvider/",
                 "NODE_DEBUG_OPTION" : "--inspect"
              },
@@ -83,7 +105,7 @@
             ],
             "env": { 
                 "TZ" : "UTC",
-                "WSProvider" :"ws://192.168.1.68:8546",
+                "WSProvider" :"ws://192.168.1.68:7546",
                 "ERC20AbiPath" : "/Users/avinashpandit/integral/app/crypto/LedgerProvider/",
                 "NODE_DEBUG_OPTION" : "--inspect"
              },
@@ -104,7 +126,7 @@
             ],
             "env": { 
                 "TZ" : "UTC",
-                "WSProvider" :"ws://192.168.1.68:8546",
+                "WSProvider" :"ws://192.168.1.68:7546",
                 "ERC20AbiPath" : "/Users/avinashpandit/integral/app/crypto/LedgerProvider/",
                 "NODE_DEBUG_OPTION" : "--inspect"
              },
@@ -125,7 +147,7 @@
             ],
             "env": { 
                 "TZ" : "UTC",
-                "WSProvider" :"ws://192.168.1.68:8546",
+                "WSProvider" :"ws://192.168.1.68:7546",
                 "ERC20AbiPath" : "/Users/avinashpandit/integral/app/crypto/LedgerProvider/",
                 "NODE_DEBUG_OPTION" : "--inspect"
              },
@@ -146,7 +168,7 @@
             ],
             "env": { 
                 "TZ" : "UTC",
-                "WSProvider" :"ws://192.168.1.68:8546",
+                "WSProvider" :"ws://192.168.1.68:7546",
                 "ERC20AbiPath" : "/Users/avinashpandit/integral/app/crypto/LedgerProvider/",
                 "NODE_DEBUG_OPTION" : "--inspect"
              },
@@ -167,7 +189,7 @@
             ],
             "env": { 
                 "TZ" : "UTC",
-                "WSProvider" :"ws://192.168.1.68:8546",
+                "WSProvider" :"ws://192.168.1.68:7546",
                 "ERC20AbiPath" : "/Users/avinashpandit/integral/app/crypto/LedgerProvider/",
                 "NODE_DEBUG_OPTION" : "--inspect"
              },
@@ -188,7 +210,7 @@
             ],
             "env": { 
                 "TZ" : "UTC",
-                "WSProvider" :"ws://192.168.1.68:8546",
+                "WSProvider" :"ws://192.168.1.68:7546",
                 "ERC20AbiPath" : "/Users/avinashpandit/integral/app/crypto/LedgerProvider/",
                 "NODE_DEBUG_OPTION" : "--inspect"
              },
@@ -209,7 +231,7 @@
             ],
             "env": { 
                 "TZ" : "UTC",
-                "WSProvider" :"ws://192.168.1.68:8546",
+                "WSProvider" :"ws://192.168.1.68:7546",
                 "ERC20AbiPath" : "/Users/avinashpandit/integral/app/crypto/LedgerProvider/",
                 "NODE_DEBUG_OPTION" : "--inspect"
              },
